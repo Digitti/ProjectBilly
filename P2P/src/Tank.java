@@ -8,19 +8,21 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 public class Tank {
+	
+	/* déclaration des tableaux contenant les différentes ressources utiles (réservoir de fichier) */
 	private static ArrayList<String> pathFile = new ArrayList<String>();
 	private static ArrayList<String> pathSplit = new ArrayList<String>();
 	private static ArrayList<String> pathHash = new ArrayList<String>();
 	
 	public static void main(String[] args) throws NoSuchAlgorithmException, IOException {
-		// TODO Auto-generated method stub
 		
-		//verifie l'existance du dossier d'entree et des elements qu'il contient
 		String pathInput = args[0];
 		System.out.println("Input Directory : " + pathInput );
+		
+		/* verifie l'existance du dossier d'entree et des elements qu'il contient */
 		performPath(pathFile, pathInput);
 		
-		//creation du dossier part en fonction du dossier d'entrée
+		/* creation du dossier part en fonction du dossier d'entrée */
 		File pathPart = new File(pathInput);
 		String pathParent = pathPart.getParent();
 		File dir = new File(pathParent+"\\"+pathPart.getName()+"Part");
@@ -34,13 +36,24 @@ public class Tank {
 			System.out.println("Output directory already exists");
 		}
 		
-		// split les documents present dans le dossier
+		/* split les documents present dans le dossier */
 		for(int i = 0; i < pathFile.size(); i++)
 		{
 			fileSplitter(pathFile, i, pathOutput);
 		}
 		
-		// hash les documents present dans le dossier
+		
+		
+		/* ------------------------------A DEVELOPPER------------------------------ */
+		
+		/* on va maintenant hashé les morceaux de fichiers dans cette partie ( création de l'arbre de merkle */
+		performPath(pathSplit, pathOutput);
+		performHash(pathSplit);
+	
+		/* ------------------------------------------------------------------------ */
+		
+	
+		
 	}
 	
 	
@@ -50,28 +63,28 @@ public class Tank {
 	 * 		cette methode verifier l'existance du dossier des fichier orginaux
 	 * 
 	 */
-	public static void performPath(ArrayList<String> al, String path)
+	public static void performPath(ArrayList<String> ListeCheminFichiers, String path)
 	{
 		File directory = new File(path);
-		//verifie si le path existe
+		/* vérifie si le path existe */
 		if(directory.exists())
 		{
-			//verifie si le path est dossier
+			/* verifie si le path est un dossier */
 			if(directory.isDirectory())
 			{
 				System.out.println("Ce dossier contient :");
-				//affiche tout les elements du dossier
+				/* affiche tout les elements du dossier */
 				for(File file : directory.listFiles())
 				{
 					System.out.println(file.getAbsolutePath());
-					al.add(file.getPath());
+					ListeCheminFichiers.add(file.getPath());
 				}
-				System.out.println("Ce dossier contient : " + al.size() + " fichiers" );
+				System.out.println("Ce dossier contient : " + ListeCheminFichiers.size() + " fichiers" );
 			}
 			else
 			{
-				//ce n'est pas un dossier mais un fichier
-				al.add(directory.getPath());
+				/* ce n'est pas un dossier mais un fichier  */
+				ListeCheminFichiers.add(directory.getPath());
 			}
 		}
 	}
@@ -91,7 +104,7 @@ public class Tank {
 		int cptPart = 0;
 		File f = new File(file.get(index));
 		long lengthFile = f.length();
-		System.out.println("Taille du fichier : " + lengthFile);
+		System.out.println("Le fichier "+f.getName()+" est de taille : "+ lengthFile);
 		if(lengthFile > 4096)
 		{
 			fis = new FileInputStream(f);
@@ -104,8 +117,14 @@ public class Tank {
 				fos.flush();
 				cptPart++;
 			}
-			System.out.println("Le fichier a ete diviser en " + cptPart + " parties");
-			performPath(pathSplit, outputDirectory);
+			System.out.println("Il a été divisé en " + cptPart + " parties");
+			System.out.println();
+			
+		}
+		else
+		{
+			System.out.println("Il n'a pas été divisé ");
+			System.out.println();		
 		}
 	}
 	
@@ -118,15 +137,14 @@ public class Tank {
 	 */
 	public static void performHash(ArrayList<String> file) throws NoSuchAlgorithmException, IOException
 	{
-		for(int i = 0; i < pathFile.size(); i++)
+		for(int i = 0; i < pathSplit.size(); i++)
 		{
 			byte sum[] = null;
 			File f = new File(file.get(i));
 			FileInputStream fis = new FileInputStream(f);
 			MessageDigest md = MessageDigest.getInstance("SHA-512");
 			DigestInputStream dis = new DigestInputStream(fis, md);
-			//affichage du checksum initial avant hash...
-			//ozghzoageh aegfazgef
+			/* affichage du checksum initial avant hash... */
 		}
 	}
 	
