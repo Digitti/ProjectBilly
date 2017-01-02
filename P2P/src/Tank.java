@@ -186,21 +186,16 @@ public class Tank {
 			{
 				CurrentPart = CurrentPart.substring(0, CurrentPart.length()-6);
 			}
-				
-				/* test s'il s'agit des parts d'un nouveau fichier à hasher ensemble */
-				//if ((NextPart.contains("part1")) == true )
-				//{
-				//	/* A DEVELOPPER */
-				//}
-			
+						
+			/* Bloc réalisant le hash de chaque morceaux (l'entrée à hasher est renseigné et mis à jour par la variable : Currentf ) */
 			FileOutputStream file1 = new FileOutputStream(pathHashfile+"\\"+CurrentPart+".hash"+cpt); 
-			cpt ++;
 			FileInputStream fis = new FileInputStream(Currentf);
 			String Ffis = fis.toString();
 			MessageDigest md = MessageDigest.getInstance("SHA-512");
-			
 			byte[] bytSHA = md.digest(Ffis.getBytes());
 			file1.write(bytSHA);
+			
+			cpt ++;
 			
 	        System.out.println("le hash généré est : "+bytSHA);
 		}		
