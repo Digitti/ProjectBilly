@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -26,10 +27,24 @@ public class Tank {
 		File pathPart = new File(pathInput);
 		String pathParent = pathPart.getParent();
 		File dir = new File(pathParent+"\\"+pathPart.getName()+"Part");
+		
 		String pathOutput = dir.getPath();
 		if(dir.mkdir())
 		{
 			System.out.println("Out Directory : " + pathOutput );
+		}
+		else
+		{
+			System.out.println("Output directory already exists");
+		}
+		
+		/* création du sossier contenant les empreintes des morceaux de fichiers */
+		File Hashfolder = new File(pathParent+"\\"+pathPart.getName()+"Hash");	
+		String pathHash = Hashfolder.getPath();
+		
+		if(Hashfolder.mkdir())
+		{
+			System.out.println("Out Directory : " + pathHash );
 		}
 		else
 		{
@@ -46,9 +61,9 @@ public class Tank {
 		
 		/* ------------------------------A DEVELOPPER------------------------------ */
 		
-		/* on va maintenant hashé les morceaux de fichiers dans cette partie ( création de l'arbre de merkle */
+		/* on va maintenant hasher les morceaux de fichiers dans cette partie ( création de l'arbre de merkle */
 		performPath(pathSplit, pathOutput);
-		performHash(pathSplit);
+		performHash(pathSplit, pathHash);
 	
 		/* ------------------------------------------------------------------------ */
 		
@@ -66,14 +81,16 @@ public class Tank {
 	public static void performPath(ArrayList<String> ListeCheminFichiers, String path)
 	{
 		File directory = new File(path);
-		/* vérifie si le path existe */
+		
+		/* vérifie si le chemin de fichier existe */
 		if(directory.exists())
 		{
-			/* verifie si le path est un dossier */
+			/* verifie si ce shemin est un dossier */
 			if(directory.isDirectory())
 			{
 				System.out.println("Ce dossier contient :");
-				/* affiche tout les elements du dossier */
+				
+				/* affiche tout les éléments du dossier */
 				for(File file : directory.listFiles())
 				{
 					System.out.println(file.getAbsolutePath());
@@ -135,20 +152,63 @@ public class Tank {
 	 * @throws NoSuchAlgorithmException
 	 * @throws IOException
 	 */
-	public static void performHash(ArrayList<String> file) throws NoSuchAlgorithmException, IOException
+	public static void performHash(ArrayList<String> file, String pathHash) throws NoSuchAlgorithmException, IOException
 	{
+		String pathHashfile = pathHash;
+		int cpt =0;
+		
+		/* on parcours l'ensemble des morceaux de fichier */
 		for(int i = 0; i < pathSplit.size(); i++)
 		{
-			byte sum[] = null;
-			File f = new File(file.get(i));
-			FileInputStream fis = new FileInputStream(f);
+			File Currentf = new File(file.get(i));
+			
+			String CurrentPart = Currentf.getName();
+					
+			/* test s'il s'agit des parts d'un nouveau fichier à hasher */
+			if ((CurrentPart.contains("part0")) == true )
+			{	
+				/* création du dossier contenant les empreintes des morceaux d'un même fichiers */
+				CurrentPart = CurrentPart.substring(0, CurrentPart.length()-6);
+				File Hashfolder = new File(pathHash+"\\"+CurrentPart);
+				pathHashfile = Hashfolder.getPath();
+				
+				if(Hashfolder.mkdir())
+				{
+					System.out.println("Out Directory : " + pathHash );
+				}
+				else
+				{
+					System.out.println("Output directory already exists");
+				}	
+				cpt =0;
+			}
+			else
+			{
+				CurrentPart = CurrentPart.substring(0, CurrentPart.length()-6);
+			}
+				
+				/* test s'il s'agit des parts d'un nouveau fichier à hasher ensemble */
+				//if ((NextPart.contains("part1")) == true )
+				//{
+				//	/* A DEVELOPPER */
+				//}
+			
+			FileOutputStream file1 = new FileOutputStream(pathHashfile+"\\"+CurrentPart+".hash"+cpt); 
+			cpt ++;
+			FileInputStream fis = new FileInputStream(Currentf);
+			String Ffis = fis.toString();
 			MessageDigest md = MessageDigest.getInstance("SHA-512");
-			DigestInputStream dis = new DigestInputStream(fis, md);
-			/* affichage du checksum initial avant hash... */
-		}
+			
+			byte[] bytSHA = md.digest(Ffis.getBytes());
+			file1.write(bytSHA);
+			
+	        System.out.println("le hash généré est : "+bytSHA);
+		}		
 	}
+}
+	
 	
 	/**
 	 * @author KeviN Re fileSplitter
 	 */
-}
+
