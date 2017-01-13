@@ -12,4 +12,21 @@ public class MerkleTree {
 		
 	}
 
+	/**
+	 * Realise l'arbre de Merkle
+	 * @param hashFolder
+	 */
+	protected static void createTree(ArrayList<String> hashFolder)
+	{
+		
+	}
+	
+	/**
+	 * Hash les fichier apres concatenation
+	 * @param concatenationHashFolder
+	 */
+	private static void performConcatenationHash(ArrayList<String> concatenationHashFolder)
+	{
+		
+	}
 }

@@ -176,7 +176,7 @@ public class Tank {
 	 * @throws NoSuchAlgorithmException
 	 * @throws IOException
 	 */
-	private static void performHash(ArrayList<String> file, String pathHash) throws NoSuchAlgorithmException, IOException
+	protected static void performHash(ArrayList<String> file, String pathHash) throws NoSuchAlgorithmException, IOException
 	{
 		String pathHashfile = pathHash;
 		int cpt =0;
@@ -225,7 +225,12 @@ public class Tank {
 		}		
 	}
 	
-	public static ArrayList<String> getArrayPathSplitHash ()
+	
+	/**
+	 * @author KeviN
+	 * @return le vecteur des dossier des fichier hash
+	 */
+	protected static ArrayList<String> getArrayPathSplitHash ()
 	{
 		return arrayPathSplitHash;
 	}
