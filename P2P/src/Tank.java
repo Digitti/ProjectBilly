@@ -87,7 +87,7 @@ public class Tank {
 	 * @param ListeCheminFichiers
 	 * @param path
 	 */
-	public static void performPath(ArrayList<String> ListeCheminFichiers, String path)
+	private static void performPath(ArrayList<String> ListeCheminFichiers, String path)
 	{
 		File directory = new File(path);
 		
@@ -123,7 +123,7 @@ public class Tank {
 	 * @param outputDirectory
 	 * @throws IOException
 	 */
-	public static void performSplit(ArrayList<String> file, int index, String pathSplit) throws IOException
+	private static void performSplit(ArrayList<String> file, int index, String pathSplit) throws IOException
 	{
 		FileInputStream fis;
 		FileOutputStream fos;
@@ -176,7 +176,7 @@ public class Tank {
 	 * @throws NoSuchAlgorithmException
 	 * @throws IOException
 	 */
-	public static void performHash(ArrayList<String> file, String pathHash) throws NoSuchAlgorithmException, IOException
+	private static void performHash(ArrayList<String> file, String pathHash) throws NoSuchAlgorithmException, IOException
 	{
 		String pathHashfile = pathHash;
 		int cpt =0;
@@ -223,6 +223,11 @@ public class Tank {
 			
 	        System.out.println("le hash généré est : "+bytSHA);
 		}		
+	}
+	
+	public static ArrayList<String> getArrayPathSplitHash ()
+	{
+		return arrayPathSplitHash;
 	}
 }
 		
