@@ -10,73 +10,82 @@ import java.util.ArrayList;
 
 public class Tank {
 	
-	/* déclaration des tableaux contenant les différentes ressources utiles (réservoir de fichier) */
-	private static ArrayList<String> pathFile = new ArrayList<String>();
-	private static ArrayList<String> pathSplit = new ArrayList<String>();
-	private static ArrayList<String> pathHash = new ArrayList<String>();
+	/**
+	 * @author KeviN
+	 * déclaration des tableaux contenant les différentes ressources utiles (réservoir de fichier)   
+	 */
+	private static ArrayList<String> arrayPathDirectory = new ArrayList<String>();
+	private static ArrayList<String> arrayPathSplitFile = new ArrayList<String>();
+	private static ArrayList<String> arrayPathSplitHash = new ArrayList<String>();
 	
+	/**
+	 * 
+	 * @param args
+	 * @throws NoSuchAlgorithmException
+	 * @throws IOException
+	 */
 	public static void main(String[] args) throws NoSuchAlgorithmException, IOException {
 		
 		String pathInput = args[0];
 		System.out.println("Input Directory : " + pathInput );
+		performPath(arrayPathDirectory, pathInput);
 		
-		/* verifie l'existance du dossier d'entree et des elements qu'il contient */
-		performPath(pathFile, pathInput);
+		/**
+		 *  Creation du dossier part en fonction du dossier d'entrée 
+		 */
+		File pathFolder = new File(pathInput);
+		String pathParent = pathFolder.getParent();
+		File pathOutput = new File(pathParent+"\\"+pathFolder.getName()+"Split");
+		String pathSplit = pathOutput.getPath();
 		
-		/* creation du dossier part en fonction du dossier d'entrée */
-		File pathPart = new File(pathInput);
-		String pathParent = pathPart.getParent();
-		File dir = new File(pathParent+"\\"+pathPart.getName()+"Part");
-		
-		String pathOutput = dir.getPath();
-		if(dir.mkdir())
+		if(pathOutput.mkdir())
 		{
-			System.out.println("Out Directory : " + pathOutput );
+			System.out.println("Out Split Directory : " + pathSplit );
 		}
 		else
 		{
 			System.out.println("Output directory already exists");
 		}
 		
-		/* création du sossier contenant les empreintes des morceaux de fichiers */
-		File Hashfolder = new File(pathParent+"\\"+pathPart.getName()+"Hash");	
-		String pathHash = Hashfolder.getPath();
+		/**
+		 *  Création du dossier contenant les empreintes des morceaux de fichiers
+		 */
+		File pathOutputHash = new File(pathParent+"\\"+pathFolder.getName()+"Hash");	
+		String pathHash = pathOutputHash.getPath();
 		
-		if(Hashfolder.mkdir())
+		if(pathOutputHash.mkdir())
 		{
-			System.out.println("Out Directory : " + pathHash );
+			System.out.println("Out Hash Directory : " + pathHash );
 		}
 		else
 		{
 			System.out.println("Output directory already exists");
 		}
 		
-		/* split les documents present dans le dossier */
-		for(int i = 0; i < pathFile.size(); i++)
+		/**
+		 *  Split les documents present dans le dossier 
+		 */
+		for(int i = 0; i < arrayPathDirectory.size(); i++)
 		{
-			fileSplitter(pathFile, i, pathOutput);
+			performSplit(arrayPathDirectory, i, pathSplit);
 		}
+			
+		/**
+		 * Affiche le contenu dans le dossier des fichier splitter
+		 */
+		performPath(arrayPathSplitFile, pathSplit);
 		
-		
-		
-		/* ------------------------------A DEVELOPPER------------------------------ */
-		
-		/* on va maintenant hasher les morceaux de fichiers dans cette partie ( création de l'arbre de merkle */
-		performPath(pathSplit, pathOutput);
-		performHash(pathSplit, pathHash);
-	
-		/* ------------------------------------------------------------------------ */
-		
-	
-		
+		/**
+		 * Genere le hash des fichiers splitter
+		 */
+		//performHash(arrayPathSplitFile, pathHash);
 	}
 	
 	
 	/**
-	 * 
-	 * @param path -> correspond au chemin du dossier des fichier originaux
-	 * 		cette methode verifier l'existance du dossier des fichier orginaux
-	 * 
+	 * @author KeviN
+	 * @param ListeCheminFichiers
+	 * @param path
 	 */
 	public static void performPath(ArrayList<String> ListeCheminFichiers, String path)
 	{
@@ -108,20 +117,35 @@ public class Tank {
 	
 	
 	/**
-	 * 
+	 * @author KeviN
 	 * @param file
 	 * @param index
 	 * @param outputDirectory
 	 * @throws IOException
 	 */
-	public static void fileSplitter(ArrayList<String> file, int index, String outputDirectory) throws IOException
+	public static void performSplit(ArrayList<String> file, int index, String pathSplit) throws IOException
 	{
 		FileInputStream fis;
 		FileOutputStream fos;
-		int cptPart = 0;
+		int cptSplit = 0;
 		File f = new File(file.get(index));
 		long lengthFile = f.length();
-		System.out.println("Le fichier "+f.getName()+" est de taille : "+ lengthFile);
+		System.out.println("Le fichier "+f.getName()+" est de taille : "+ lengthFile + " octets");
+		
+		//Cree un dossier pour les split du fichier selectionner
+		File splitFolder = new File(pathSplit+"\\"+f.getName());
+		String pathSplitFile = splitFolder.getPath();
+		
+		if(splitFolder.mkdir())
+		{
+			System.out.println("Out Directory : " + pathSplit );
+		}
+		else
+		{
+			System.out.println("Output directory already exists");
+		}
+		
+		//Decoupe le fichier
 		if(lengthFile > 4096)
 		{
 			fis = new FileInputStream(f);
@@ -129,12 +153,12 @@ public class Tank {
 			{
 				byte[] buffer = new byte[4096];
 				fis.read(buffer, 0, 4096);
-				fos = new FileOutputStream(outputDirectory+"\\"+f.getName()+".part"+i);
+				fos = new FileOutputStream(pathSplitFile+"\\"+f.getName()+".split"+cptSplit);
 				fos.write(buffer);
 				fos.flush();
-				cptPart++;
+				cptSplit++;
 			}
-			System.out.println("Il a été divisé en " + cptPart + " parties");
+			System.out.println("Il a été divisé en " + cptSplit + " parties");
 			System.out.println();
 			
 		}
@@ -147,7 +171,7 @@ public class Tank {
 	
 	
 	/**
-	 * 
+	 * @author Arnold 
 	 * @param file
 	 * @throws NoSuchAlgorithmException
 	 * @throws IOException
@@ -158,7 +182,7 @@ public class Tank {
 		int cpt =0;
 		
 		/* on parcours l'ensemble des morceaux de fichier */
-		for(int i = 0; i < pathSplit.size(); i++)
+		for(int i = 0; i < file.size(); i++)
 		{
 			File Currentf = new File(file.get(i));
 			
@@ -201,9 +225,4 @@ public class Tank {
 		}		
 	}
 }
-	
-	
-	/**
-	 * @author KeviN Re fileSplitter
-	 */
-
+		
