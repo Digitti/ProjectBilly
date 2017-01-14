@@ -77,8 +77,20 @@ public class Tank {
 		
 		/**
 		 * Genere le hash des fichiers splitter
+		 */		
+		
+		performHash(arrayPathSplitFile, pathHash);
+		
+		/**
+		 * Affiche le contenu dans le dossier des fichier splitter
 		 */
-		//performHash(arrayPathSplitFile, pathHash);
+		performPath(arrayPathSplitHash, pathHash);
+		
+		MerkleTree ArbreDeMerkle = new MerkleTree(arrayPathSplitHash, args);
+		ArbreDeMerkle.CreationDossierMerkle();
+		ArbreDeMerkle.CreationArbreMerkle();
+		
+		
 	}
 	
 	
@@ -176,53 +188,51 @@ public class Tank {
 	 * @throws NoSuchAlgorithmException
 	 * @throws IOException
 	 */
-	protected static void performHash(ArrayList<String> file, String pathHash) throws NoSuchAlgorithmException, IOException
+	protected static void performHash(ArrayList<String> ListeDossierFichierSplit, String pathHash) throws NoSuchAlgorithmException, IOException
 	{
-		String pathHashfile = pathHash;
-		int cpt =0;
+		int NumeroFichierHash =0;
 		
-		/* on parcours l'ensemble des morceaux de fichier */
-		for(int i = 0; i < file.size(); i++)
+		/* Il s'agit dans cette partie de parcourir l'ensemble des fichiers splits du dossier split pour calculer les hashs de chaque fichiers */
+		for(int i = 0; i < ListeDossierFichierSplit.size(); i++)
 		{
-			File Currentf = new File(file.get(i));
+			File DossierCourant = new File(ListeDossierFichierSplit.get(i));
 			
-			String CurrentPart = Currentf.getName();
-					
-			/* test s'il s'agit des parts d'un nouveau fichier à hasher */
-			if ((CurrentPart.contains("part0")) == true )
-			{	
-				/* création du dossier contenant les empreintes des morceaux d'un même fichiers */
-				CurrentPart = CurrentPart.substring(0, CurrentPart.length()-6);
-				File Hashfolder = new File(pathHash+"\\"+CurrentPart);
-				pathHashfile = Hashfolder.getPath();
-				
-				if(Hashfolder.mkdir())
-				{
-					System.out.println("Out Directory : " + pathHash );
-				}
-				else
-				{
-					System.out.println("Output directory already exists");
-				}	
-				cpt =0;
+			/* creation du dossier contenant les empreintes des morceaux d'un même fichiers */
+			File DossierHashCourant = new File(pathHash+"\\"+DossierCourant.getName());
+			
+			if(DossierHashCourant.mkdir())
+			{
+				System.out.println("Out Directory : " + pathHash );
 			}
 			else
 			{
-				CurrentPart = CurrentPart.substring(0, CurrentPart.length()-6);
-			}
-						
-			/* Bloc réalisant le hash de chaque morceaux (l'entrée à hasher est renseigné et mis à jour par la variable : Currentf ) */
-			FileOutputStream file1 = new FileOutputStream(pathHashfile+"\\"+CurrentPart+".hash"+cpt); 
-			FileInputStream fis = new FileInputStream(Currentf);
-			String Ffis = fis.toString();
-			MessageDigest md = MessageDigest.getInstance("SHA-512");
-			byte[] bytSHA = md.digest(Ffis.getBytes());
-			file1.write(bytSHA);
+				System.out.println("Output directory already exists");
+			}			
 			
-			cpt ++;
-			
-	        System.out.println("le hash généré est : "+bytSHA);
-		}		
+			/* On parcours le dossier courant de fichier split */
+			for(File FichierSplitcourant : DossierCourant.listFiles())
+			{
+				/* mis à jour des flux d'entres et de sortie */
+				FileInputStream FichierSplitCourant = new FileInputStream(FichierSplitcourant);
+				String NomFichierSplitCourantRaccourcis = FichierSplitcourant.getName().substring(0, FichierSplitcourant.getName().length()-7);
+				FileOutputStream HashCourant = new FileOutputStream(DossierHashCourant.getAbsolutePath()+"\\"+NomFichierSplitCourantRaccourcis+".hash"+NumeroFichierHash); 
+				
+				/* Bloc réalisant le hash de chaque morceaux (l'entrée à hasher est renseigné et mis à jour par la variable : FichierSplitCourant ) */
+				String NomFichierSplitCourant = FichierSplitCourant.toString();
+				MessageDigest md = MessageDigest.getInstance("SHA-512");
+				byte[] bytSHA = md.digest(NomFichierSplitCourant.getBytes());
+				HashCourant.write(bytSHA);
+				
+				/* la creation de hash est terminée. le numéro de hash est mis a jour, les flux de sortie et d'entrée sont refermes */
+				NumeroFichierHash ++;
+				FichierSplitCourant.close();
+				HashCourant.close();
+				
+				System.out.println("le hash genere est : "+bytSHA);
+			}	
+			NumeroFichierHash =0;
+		}	
+		
 	}
 	
 	
