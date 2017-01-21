@@ -65,10 +65,7 @@ public class Tank {
 		/**
 		 *  Split les documents present dans le dossier 
 		 */
-		for(int i = 0; i < arrayPathDirectory.size(); i++)
-		{
-			performSplit(arrayPathDirectory, i, pathSplit);
-		}
+		performSplit(arrayPathDirectory, pathSplit);
 			
 		/**
 		 * Affiche le contenu dans le dossier des fichier splitter
@@ -78,7 +75,6 @@ public class Tank {
 		/**
 		 * Genere le hash des fichiers splitter
 		 */		
-		
 		performHash(arrayPathSplitFile, pathHash);
 		
 		/**
@@ -135,49 +131,52 @@ public class Tank {
 	 * @param outputDirectory
 	 * @throws IOException
 	 */
-	private static void performSplit(ArrayList<String> file, int index, String pathSplit) throws IOException
+	private static void performSplit(ArrayList<String> file, String pathSplit) throws IOException
 	{
-		FileInputStream fis;
-		FileOutputStream fos;
-		int cptSplit = 0;
-		File f = new File(file.get(index));
-		long lengthFile = f.length();
-		System.out.println("Le fichier "+f.getName()+" est de taille : "+ lengthFile + " octets");
-		
-		//Cree un dossier pour les split du fichier selectionner
-		File splitFolder = new File(pathSplit+"\\"+f.getName());
-		String pathSplitFile = splitFolder.getPath();
-		
-		if(splitFolder.mkdir())
+		for(int index = 0; index < file.size(); index++)
 		{
-			System.out.println("Out Directory : " + pathSplit );
-		}
-		else
-		{
-			System.out.println("Output directory already exists");
-		}
-		
-		//Decoupe le fichier
-		if(lengthFile > 4096)
-		{
-			fis = new FileInputStream(f);
-			for(int i = 0; i < (lengthFile/4096); i++)
-			{
-				byte[] buffer = new byte[4096];
-				fis.read(buffer, 0, 4096);
-				fos = new FileOutputStream(pathSplitFile+"\\"+f.getName()+".split"+cptSplit);
-				fos.write(buffer);
-				fos.flush();
-				cptSplit++;
-			}
-			System.out.println("Il a été divisé en " + cptSplit + " parties");
-			System.out.println();
+			FileInputStream fis;
+			FileOutputStream fos;
+			int cptSplit = 0;
+			File f = new File(file.get(index));
+			long lengthFile = f.length();
+			System.out.println("Le fichier "+f.getName()+" est de taille : "+ lengthFile + " octets");
 			
-		}
-		else
-		{
-			System.out.println("Il n'a pas été divisé ");
-			System.out.println();		
+			//Cree un dossier pour les split du fichier selectionner
+			File splitFolder = new File(pathSplit+"\\"+f.getName());
+			String pathSplitFile = splitFolder.getPath();
+			
+			if(splitFolder.mkdir())
+			{
+				System.out.println("Out Directory : " + pathSplit );
+			}
+			else
+			{
+				System.out.println("Output directory already exists");
+			}
+			
+			//Decoupe le fichier
+			if(lengthFile > 4096)
+			{
+				fis = new FileInputStream(f);
+				for(int j = 0; j < (lengthFile/4096); j++)
+				{
+					byte[] buffer = new byte[4096];
+					fis.read(buffer, 0, 4096);
+					fos = new FileOutputStream(pathSplitFile+"\\"+f.getName()+".split"+cptSplit);
+					fos.write(buffer);
+					fos.flush();
+					cptSplit++;
+				}
+				System.out.println("Il a été divisé en " + cptSplit + " parties");
+				System.out.println();
+				
+			}
+			else
+			{
+				System.out.println("Il n'a pas été divisé ");
+				System.out.println();		
+			}
 		}
 	}
 	
@@ -233,16 +232,6 @@ public class Tank {
 			NumeroFichierHash =0;
 		}	
 		
-	}
-	
-	
-	/**
-	 * @author KeviN
-	 * @return le vecteur des dossier des fichier hash
-	 */
-	protected static ArrayList<String> getArrayPathSplitHash ()
-	{
-		return arrayPathSplitHash;
 	}
 }
 		

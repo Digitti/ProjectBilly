@@ -11,6 +11,7 @@ public class MerkleTree {
 	ArrayList<String> arrayHashFolder = new ArrayList<String>();
 	ArrayList<String> arrayConcatenationFolder = new ArrayList<String>();
 	ArrayList<String> arrayConcatenationHashFolder = new ArrayList<String>();
+	
 	String CheminDossierCommun;
 	String CheminDossierCommunMerkle;
 
@@ -81,7 +82,6 @@ public class MerkleTree {
 		
 		CheminDossierCommunMerkle = pathOutput.getPath();
 	}
-	
 
 	/**
 	 * Realise l'arbre de Merkle
