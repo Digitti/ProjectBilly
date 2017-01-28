@@ -26,7 +26,7 @@ public class Host {
 			try {
 				// initialisation d'une connexion cote client
 				DatagramSocket host = new DatagramSocket();
-				
+				System.out.println("Le client est lancé !");
 				// creation du packet
 				byte[] buffer = msg.getBytes();
 				InetAddress ipAddr =  InetAddress.getByName(addr);
@@ -37,6 +37,7 @@ public class Host {
 				
 				// envoie au serveur
 				host.send(packet);
+				System.out.println("Un message vient d'etre envoyer !");
 				
 				// reponse du serveur
 				byte[] rBuffer = new byte[8196];

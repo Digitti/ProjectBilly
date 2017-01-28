@@ -22,7 +22,7 @@ public class Server {
 		try {
 			// creation de la connexion serveur
 			DatagramSocket server = new DatagramSocket(port, addr);
-			System.out.println("Ecoute sur le port : " + port);
+			System.out.println("Le serveur est lancé !");
 			while(true)
 			{
 				// packet pour recuperer la requete client 
@@ -31,6 +31,7 @@ public class Server {
 				
 				// recuperation du packet
 				server.receive(packet);
+				System.out.println("Vous avez un nouveau message !");
 				
 				// test affichage des données
 				String msg = new String(packet.getData());
@@ -41,7 +42,6 @@ public class Server {
 				DatagramPacket response = new DatagramPacket(rBuffer, rBuffer.length, packet.getAddress(), packet.getPort());
 				server.send(response);
 				response.setLength(rBuffer.length);
-				server.close();
 			}
 		} catch (SocketException e) {
 			// TODO Auto-generated catch block
