@@ -1,3 +1,5 @@
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 public class MyMain {
 
@@ -7,10 +9,17 @@ public class MyMain {
 	 * 
 	 * Main du programme P2P
 	 */
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		System.out.println(args[0]);
-		System.out.println(args[1]);
+		Server server = new Server();
+		InetAddress ia;
+		try {
+			ia = InetAddress.getByName("25.65.128.108");
+			server.udpServer(20000, ia);
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
-
 }

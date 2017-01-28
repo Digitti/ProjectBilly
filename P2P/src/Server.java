@@ -6,6 +6,11 @@ import java.net.SocketException;
 
 public class Server {
 
+	public Server()
+	{
+		
+	}
+	
 	/**
 	 * Recherche des fichiers
 	 * @param port
@@ -17,6 +22,7 @@ public class Server {
 		try {
 			// creation de la connexion serveur
 			DatagramSocket server = new DatagramSocket(port, addr);
+			System.out.println("Ecoute sur le port : " + port);
 			while(true)
 			{
 				// packet pour recuperer la requete client 

@@ -6,6 +6,11 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 
 public class Host {
+	
+	public Host()
+	{
+		
+	}
 
 	/**
 	 * Recherche des fichiers 
