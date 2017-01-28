@@ -91,13 +91,4 @@ public class MerkleTree {
 	{
 		
 	}
-	
-	/**
-	 * Hash les fichier apres concatenation
-	 * @param concatenationHashFolder
-	 */
-	private static void performConcatenationHash(ArrayList<String> concatenationHashFolder)
-	{
-		
-	}
 }

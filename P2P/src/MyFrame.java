@@ -21,5 +21,4 @@ public interface MyFrame {
 		public byte nameFile;		// nom du fichier
 	}
 	
-	
 }
