@@ -37,11 +37,19 @@ public class Server {
 				String msg = new String(packet.getData());
 				System.out.println("Message recu : " + msg);
 				
+				// verfication dans le Tank de la presence du ou des fichiers
+				
+				// verfication positive on prepare la reponse avec tout les bon elements
+				
+				// verification negative on prepare la reponse seulement en incrementant le chemin
+				
 				// reponse de la bonne reception du packet
 				byte[] rBuffer = new String(msg + "bien recu !").getBytes();
 				DatagramPacket response = new DatagramPacket(rBuffer, rBuffer.length, packet.getAddress(), packet.getPort());
 				server.send(response);
 				response.setLength(rBuffer.length);
+				
+				// debut du telechargement -> Thread performHash or performFile
 			}
 		} catch (SocketException e) {
 			// TODO Auto-generated catch block

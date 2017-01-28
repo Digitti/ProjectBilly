@@ -44,6 +44,9 @@ public class Host {
 				DatagramPacket response = new DatagramPacket(rBuffer, rBuffer.length, ipAddr, port);
 				host.receive(response);
 				System.out.println("reponse recu : " + new String(response.getData()));
+				
+				// Si reponse positive lancement du Thread du telechargement -> Thread tcpHost
+				
 				host.close();
 				
 			} catch (SocketException e) {

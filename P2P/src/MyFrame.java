@@ -3,7 +3,7 @@ public interface MyFrame {
 	
 	class frameUdpRequest
 	{
-		public byte lenght;		// taille du fichier
+		public byte lenght;		// longueur du chemin, soit le nombre de serveur rencontree
 		public byte ipType;		// type d'adresse IPV4 ou IPV6
 		public byte[] addr = new byte[16];		// addresse IP
 		public short port;		//numero du port
@@ -20,4 +20,6 @@ public interface MyFrame {
 		public byte[] racineHash = new byte[16];		// hash du fichier racine
 		public byte nameFile;		// nom du fichier
 	}
+	
+	
 }
