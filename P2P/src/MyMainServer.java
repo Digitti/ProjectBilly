@@ -2,8 +2,11 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
-public class MyMainServer {
 
+public class MyMainServer implements MyFrame {
+
+	
+	
 	/**
 	 * @author KeviN
 	 * @param args

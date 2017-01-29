@@ -15,14 +15,20 @@ public class MyMainHost implements MyFrame {
 		System.out.print("Veuillez entree l'adresse ip du votre serveur demander : ");
 		String ip = sc.nextLine();
 		System.out.print("Veuillez entree le port d'ecoute souhaiter :  ");
-		String port = sc.nextLine();
+		int port = sc.nextInt();
 		sc.close();
 		
-		// composition de la requete udp
-		frameUdpRequest fr = null;
+		/* renseignement de la requête */
+		frameUdpRequest Request = new frameUdpRequest();
 		
-		// lancement de la communication client
-		h.udpHost(" UDP DATAGRAM ", ip, Integer.parseInt(port));
+		Request.RequestType = REQUESTTYPE.NameRequest;		/* pour le moment on choisis une requête de type name */
+		Request.nameOrHash = new String("bd").getBytes();	/* pour le moment on désire télécharger le fichier bd */
+		Request.lenght = 1;
+		Request.IpType = IPTYPE.IPV4;
+		Request.addr = ip.getBytes();
+		Request.port = port;
+		
+		/* On transmet la requête */
+		h.udpHost(Request);
 	}
-
 }

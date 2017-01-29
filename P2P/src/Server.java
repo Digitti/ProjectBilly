@@ -4,7 +4,8 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
-public class Server {
+
+public class Server implements MyFrame {
 
 	public Server()
 	{
@@ -17,7 +18,7 @@ public class Server {
 	 * @param addr
 	 * @throws IOException
 	 */
-	public void udpServer ( int port, InetAddress addr)
+	public void udpServer  ( int port, InetAddress addr)
 	{
 		try {
 			// creation de la connexion serveur
@@ -32,16 +33,34 @@ public class Server {
 				// recuperation du packet
 				server.receive(packet);
 				System.out.println("Vous avez un nouveau message !");
-				
+						
 				// test affichage des données
 				String msg = new String(packet.getData());
 				System.out.println("Message recu : " + msg);
 				
-				// verfication dans le Tank de la presence du ou des fichiers
+				/* renseignement de la requête */
+				frameUdpRequest Request = new frameUdpRequest();
+				Request = MyFrame.CastToframeUdpRequest(packet.getData());
 				
-				// verfication positive on prepare la reponse avec tout les bon elements
 				
-				// verification negative on prepare la reponse seulement en incrementant le chemin
+				if (Request.RequestType == REQUESTTYPE.NameRequest){
+					
+					// verfication dans le Tank de la presence du ou des fichiers
+					// verfication positive on prepare la reponse avec tout les bon elements
+					// verification negative on prepare la reponse seulement en incrementant le chemin
+				}
+				else if (Request.RequestType == REQUESTTYPE.MerkleRequest){
+					
+					// verfication dans le Tank de la presence du ou des fichiers
+					// verfication positive on prepare la reponse avec tout les bon elements
+					// verification negative on prepare la reponse seulement en incrementant le chemin
+				}
+				
+				/*
+				Request.nameOrHash = new String("bd").getBytes();	/* pour le moment on désire télécharger le fichier bd *//*
+				Request.lenght = 1;
+				*/
+				
 				
 				// reponse de la bonne reception du packet
 				byte[] rBuffer = new String(msg + "bien recu !").getBytes();

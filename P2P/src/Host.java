@@ -1,10 +1,12 @@
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
-public class Host {
+
+public class Host implements MyFrame{
 	
 	public Host()
 	{
@@ -18,7 +20,7 @@ public class Host {
 	 * @param port
 	 * @throws IOException
 	 */
-	public void udpHost( String msg, String addr, int port)
+	public void udpHost(frameUdpRequest request)
 	{
 		while(true)
 		{
@@ -26,23 +28,30 @@ public class Host {
 				// initialisation d'une connexion cote client
 				DatagramSocket host = new DatagramSocket();
 				System.out.println("Le client est lancé !");
+				
 				// creation du packet
-				byte[] buffer = msg.getBytes();
-				InetAddress ipAddr =  InetAddress.getByName(addr);
-				DatagramPacket packet = new DatagramPacket(buffer, buffer.length, ipAddr, port);
+				//byte[] buffer = msg.getBytes();
+				//InetAddress ipAddr =  InetAddress.getByName(addr);
+				
+				InetAddress ipAddr = InetAddress.getByAddress(request.addr);
+				
+				byte[] tBuffer = new byte[MyFrame.CastToByte(request).length];
+				tBuffer = MyFrame.CastToByte(request);
+				
+				DatagramPacket packet = new DatagramPacket(tBuffer, tBuffer.length, ipAddr, request.port);
 				
 				// affectation des donnees au packet
-				packet.setData(buffer);
+				packet.setData(tBuffer);
 				
-				// envoie au serveur
+				// envoi au serveur
 				host.send(packet);
 				System.out.println("Un message vient d'etre envoyer !");
 				
 				// reponse du serveur
-				byte[] rBuffer = new byte[8196];
-				DatagramPacket response = new DatagramPacket(rBuffer, rBuffer.length, ipAddr, port);
-				host.receive(response);
-				System.out.println("reponse recu : " + new String(response.getData()));
+				//byte[] rBuffer = new byte[8196];
+				//DatagramPacket response = new DatagramPacket(rBuffer, rBuffer.length, ipAddr, port);
+				//host.receive(response);
+				//System.out.println("reponse recu : " + new String(response.getData()));
 				
 				// Si reponse positive lancement du Thread du telechargement -> Thread tcpHost
 				
