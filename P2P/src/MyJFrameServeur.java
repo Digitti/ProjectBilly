@@ -46,7 +46,7 @@ public class MyJFrameServeur extends JFrame {
 	private boolean ipIsOk = false;
 	private boolean isIpV6 = false;
 	
-	
+	private Server s;
 
 	/**
 	 * Launch the application.
@@ -76,6 +76,10 @@ public class MyJFrameServeur extends JFrame {
 		
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		
+		Server s = new Server();
+		
 		
 		
 		/*
@@ -223,7 +227,25 @@ public class MyJFrameServeur extends JFrame {
 					System.out.print("Config OK");
 					
 					
-					//TODO Commencer l'ecoute
+					// lancement de l'ecoute serveur
+					InetAddress ia;
+					try {
+						ia = InetAddress.getByName(tf_ip.getText());
+						
+						Thread t = new Thread(new Runnable() {
+							
+							@Override
+							public void run() {
+								// TODO Auto-generated method stub
+								s.udpServer(Integer.parseInt(tf_port.getText()), ia);
+							}
+						});
+						t.start();
+						
+					} catch (UnknownHostException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					
 					
 					
