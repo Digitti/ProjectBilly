@@ -20,7 +20,8 @@ public class Tank {
 	private static ArrayList<String> arrayPathFlatTree = new ArrayList<String>();
 	
 	/**
-	 * 
+	 * @author KeviN	@author Arnold
+	 * Ce Main permet de tester de facon independante les methodes de classe !!!
 	 * @param args
 	 * @throws NoSuchAlgorithmException
 	 * @throws IOException

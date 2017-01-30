@@ -1,7 +1,12 @@
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.Socket;
 import java.net.SocketException;
 
 
@@ -28,7 +33,7 @@ public class Host implements MyFrame{
 			try {
 				Thread.sleep(3000);
 				
-				// initialisation d'une connexion cote client
+				// initialisation d'une connexion cote client UDP
 				DatagramSocket host = new DatagramSocket();
 				System.out.println("Le client est lancé !");
 				
@@ -73,10 +78,39 @@ public class Host implements MyFrame{
 	}
 	
 	/**
+	 * @author KeviN
+	 * @param server
+	 * @param port
+	 * @param nameFile
 	 * Download des fichiers : telechargement des fichiers apres recherche des fichiers
 	 */
-	public void tcpHost()
+	public void tcpHost(InetAddress server, int port, String nameFile)
 	{
-		
+		try {
+			// initialisation d'une connexion cote client TCP
+			Socket host = new Socket(server, port);
+			System.out.println("Le telechargement est lance");
+			while(true)
+			{	
+				// lecture de donnee en provenance du serveur
+				File f = new File(nameFile);
+				InputStream is = new FileInputStream(f);
+		        OutputStream os = host.getOutputStream();
+		        System.out.print("Reception du fichier en cours ");
+		        int count;
+		        byte[] buffer = new byte[4096]; 
+		        while ((count = is.read(buffer)) > 0)
+		        {
+		          os.write(buffer, 0, count);
+		          System.out.print(".");
+		        }
+		        System.out.println("");
+		        System.out.println("Reception termine !");
+			}
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

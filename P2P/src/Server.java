@@ -1,7 +1,14 @@
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.net.SocketException;
 
 
@@ -13,19 +20,18 @@ public class Server implements MyFrame {
 	}
 	
 	/**
-	 * Recherche des fichiers
+	 * @author KeviN
 	 * @param port
 	 * @param addr
 	 * @throws IOException
-	 * 
-	 * Méthode réalisant la partie réception des requêtes et analyse
+	 * Recherche des fichiers : Méthode réalisant la partie réception des requêtes et analyse
 	 */
 	public void udpServer  ( int port, InetAddress addr)
 	{
 		try {
-			// creation de la connexion serveur
+			// creation de la connexion serveur UDP
 			DatagramSocket server = new DatagramSocket(port, addr);
-			System.out.println("Le serveur est lancé !");
+			System.out.println("La recherche de fichier est lancé !");
 			while(true)
 			{
 				// packet pour recuperer la requete client 
@@ -34,9 +40,8 @@ public class Server implements MyFrame {
 				
 				// recuperation du packet
 				server.receive(packet);
-				System.out.println("Vous avez un nouveau message !");
+				System.out.println("Nouvelle requete recu !");
 				
-				int taille = packet.getLength();
 				byte [] receiveBuffer =  new byte [packet.getLength()];
 				
 				for (int i=0; i < packet.getLength(); i++){
@@ -95,10 +100,46 @@ public class Server implements MyFrame {
 	}
 	
 	/**
-	 * Download des fichier : Envoie des fichier apres la recherche des fichiers
+	 * @author KeviN
+	 * @param port
+	 * @param sendFile
+	 * Telechargement des fichiers : Envoie des fichier apres la recherche des fichiers
 	 */
-	public void tcpServer()
+	public void tcpServer(int port, String sendFile)
 	{
-		
+		try {
+			// creation de la connexion serveur TCP
+			ServerSocket server = new ServerSocket(port);
+			System.out.println("Le telechargement est lance");
+			while(true)
+			{
+				// accepte une connexion avec le client
+				Socket client = server.accept();
+				
+				// ecriture de donnee a destination du client 
+				InputStream is = client.getInputStream();
+				
+				// fichier a envoye
+				OutputStream os =  new FileOutputStream(sendFile);
+				System.out.print("Envoie du fichier ");
+				int count;
+				byte[] buffer = new byte[4096];
+				while ((count = is.read(buffer)) > 0)
+				{
+				  os.write(buffer, 0, count);
+				  System.out.print(".");
+				}
+				System.out.println("");
+				System.out.println("Envoi termine !");
+				
+				os.close();
+				is.close();
+				client.close();
+				server.close();
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
