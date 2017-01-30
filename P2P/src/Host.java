@@ -25,17 +25,16 @@ public class Host implements MyFrame{
 		while(true)
 		{
 			try {
+				Thread.sleep(3000);
+				
 				// initialisation d'une connexion cote client
 				DatagramSocket host = new DatagramSocket();
 				System.out.println("Le client est lancé !");
 				
-				// creation du packet
-				//byte[] buffer = msg.getBytes();
-				//InetAddress ipAddr =  InetAddress.getByName(addr);
-				
 				InetAddress ipAddr = InetAddress.getByAddress(request.addr);
+				//InetAddress ipAddr = InetAddress.;
 				
-				byte[] tBuffer = new byte[MyFrame.CastToByte(request).length];
+				byte[] tBuffer = new byte[(MyFrame.CastToByte(request).length)];
 				tBuffer = MyFrame.CastToByte(request);
 				
 				DatagramPacket packet = new DatagramPacket(tBuffer, tBuffer.length, ipAddr, request.port);
@@ -55,12 +54,17 @@ public class Host implements MyFrame{
 				
 				// Si reponse positive lancement du Thread du telechargement -> Thread tcpHost
 				
+				
+				
 				host.close();
 				
 			} catch (SocketException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

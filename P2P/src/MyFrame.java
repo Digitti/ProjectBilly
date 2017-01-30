@@ -1,3 +1,5 @@
+import java.math.BigInteger;
+import java.util.Arrays;
 
 public interface MyFrame {
 	
@@ -31,72 +33,123 @@ public interface MyFrame {
 		  NameRequest;
 		}
 	
-	public static byte[] CastToByte(frameUdpRequest request){
+	/* méthode pour caster frameUdpRequest-->byte[] */
+	public static byte[] CastToByte(frameUdpRequest TransmitRequest){
 		
-		byte[] tBuffer = new byte[16];
-		
-		tBuffer [0] = request.lenght;
-		
-		if (request.IpType == IPTYPE.IPV4){
+		if (TransmitRequest.IpType == IPTYPE.IPV4){
+			
+			byte[] tBuffer = new byte[9+TransmitRequest.nameOrHash.length]; 
+			
+			tBuffer [0] = TransmitRequest.lenght;
 			tBuffer[1] = 0;
+			
+			for (int i=0;i<4;i++){
+				tBuffer[2+i] = TransmitRequest.addr[i];
+			}
+			
+			/* découpe de l'entier sur 2 bytes 
+			 * !!!!!!! ne pas dépasser 65535 comme numéro de port 
+			 * sinon augmenter le nombre de byte pour stocker */
+			tBuffer[6] = (byte) TransmitRequest.port;
+			tBuffer[7] = (byte) (TransmitRequest.port >> 8);
+			
+			if (TransmitRequest.RequestType == REQUESTTYPE.MerkleRequest){
+				tBuffer[8] = 0;
+				
+			}
+			else{
+				tBuffer[8] = 1;
+			}
+			for (int i=0;i<TransmitRequest.nameOrHash.length;i++){
+				tBuffer[9+i] = TransmitRequest.nameOrHash[i];
+			}
+			
+			return tBuffer;
 		}
 		else{
+			
+			byte[] tBuffer = new byte[21+TransmitRequest.nameOrHash.length]; 
+			
+			tBuffer [0] = TransmitRequest.lenght;
 			tBuffer[1] = 0;
+			
+			for (int i=0;i<16;i++){
+				tBuffer[2+i] = TransmitRequest.addr[i];
+			}
+			
+			/* découpe de l'entier sur 2 bytes 
+			 * !!!!!!! ne pas dépasser 65535 comme numéro de port 
+			 * sinon augmenter le nombre de byte pour stocker */
+			tBuffer[18] = (byte) TransmitRequest.port;
+			tBuffer[19] = (byte) (TransmitRequest.port >> 8);
+			
+			if (TransmitRequest.RequestType == REQUESTTYPE.MerkleRequest){
+				tBuffer[20] = 0;
+			}
+			else{
+				tBuffer[20] = 1;
+			}
+			
+			for (int i=0;i<16;i++){
+				tBuffer[21+i] = TransmitRequest.nameOrHash[i];
+			}
+			
+			return tBuffer;
 		}
-		
-		for (int i=0;i<16;i++){
-			tBuffer[2+i] = request.addr[i];
-		}
-		
-		tBuffer[18] = (byte) request.port;
-		
-		if (request.RequestType == REQUESTTYPE.MerkleRequest){
-			tBuffer[19] = 0;
-		}
-		else{
-			tBuffer[19] = 1;
-		}
-		
-		for (int i=0;i<16;i++){
-			tBuffer[19+i] = request.nameOrHash[i];
-		}
-		
-		return tBuffer;
-		
 	}
 	
+	/* méthode pour caster byte[]-->frameUdpRequest */
 	public static frameUdpRequest CastToframeUdpRequest(byte[] rBuffer){
 		
-		frameUdpRequest request = new frameUdpRequest();
+		
+		frameUdpRequest ReceiveRequest = new frameUdpRequest();
 		
 		
-		 request.lenght = rBuffer[0];
+		ReceiveRequest.lenght = rBuffer[0];
 		
 		if (rBuffer[1] == 0){
-			request.IpType = IPTYPE.IPV4;
+			ReceiveRequest.IpType = IPTYPE.IPV4;
+			
+			for (int i=0;i<4;i++){
+				ReceiveRequest.addr[i] = rBuffer[i+2];
+			}
+			
+			ReceiveRequest.port  = (rBuffer[7] <<8)&0xff00|(rBuffer[6]<< 0)&0x00ff ;
+			
+			if (rBuffer[8] == 0){
+				ReceiveRequest.RequestType = REQUESTTYPE.MerkleRequest;
+			}
+			else{
+				ReceiveRequest.RequestType = REQUESTTYPE.NameRequest;
+			}
+			
+			for (int i=0;i<(rBuffer.length-9);i++){
+				ReceiveRequest.nameOrHash[i] = rBuffer[i+9];
+			}
+			
 		}
 		else{
-			request.IpType = IPTYPE.IPV6;
+			ReceiveRequest.IpType = IPTYPE.IPV6;
+			
+			for (int i=0;i<16;i++){
+				ReceiveRequest.addr[i] = rBuffer[i+2];
+			}
+			ReceiveRequest.port  = (rBuffer[19] <<8)&0xff00|(rBuffer[18]<< 0)&0x00ff ;
+			
+			if (rBuffer[20] == 0){
+				ReceiveRequest.RequestType = REQUESTTYPE.MerkleRequest;
+			}
+			else{
+				ReceiveRequest.RequestType = REQUESTTYPE.NameRequest;
+			}
+			
+			for (int i=0;i<(rBuffer.length-21);i++){
+				ReceiveRequest.nameOrHash[i] = rBuffer[i+21];
+			}
+			
 		}
 		
-		for (int i=0;i<16;i++){
-			request.addr[i+2] = rBuffer[i];
-		}
-		
-		request.port = (int)rBuffer[18];
-		
-		if (rBuffer[19] == 0){
-			request.RequestType = REQUESTTYPE.MerkleRequest;
-		}
-		else{
-			request.RequestType = REQUESTTYPE.NameRequest;
-		}
-		
-		for (int i=0;i<16;i++){
-			request.nameOrHash[19+i] = rBuffer[i];
-		}
-		
-		return request;
+		return ReceiveRequest;
 		
 	}	
 	/*
@@ -109,4 +162,7 @@ public interface MyFrame {
     - on peut imaginer d'autres types de requêtes préfixées par un octet autre que 0 et 1 
 
 */
+	
 }
+
+

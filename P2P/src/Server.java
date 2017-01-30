@@ -27,33 +27,39 @@ public class Server implements MyFrame {
 			while(true)
 			{
 				// packet pour recuperer la requete client 
-				byte [] receiveBuffer =  new byte [8196];
-				DatagramPacket packet = new DatagramPacket(receiveBuffer, receiveBuffer.length);
+				byte [] Buffer =  new byte [8196];
+				DatagramPacket packet = new DatagramPacket(Buffer, Buffer.length);
 				
 				// recuperation du packet
 				server.receive(packet);
 				System.out.println("Vous avez un nouveau message !");
-						
-				// test affichage des données
-				String msg = new String(packet.getData());
-				System.out.println("Message recu : " + msg);
 				
-				/* renseignement de la requête */
+				int taille = packet.getLength();
+				byte [] receiveBuffer =  new byte [packet.getLength()];
+				
+				for (int i=0; i < packet.getLength(); i++){
+					receiveBuffer[i] = packet.getData()[i];
+				}
+				
+				/* Traitement de la requête */
 				frameUdpRequest Request = new frameUdpRequest();
-				Request = MyFrame.CastToframeUdpRequest(packet.getData());
-				
+				Request = MyFrame.CastToframeUdpRequest(receiveBuffer);
 				
 				if (Request.RequestType == REQUESTTYPE.NameRequest){
 					
 					// verfication dans le Tank de la presence du ou des fichiers
 					// verfication positive on prepare la reponse avec tout les bon elements
 					// verification negative on prepare la reponse seulement en incrementant le chemin
+					System.out.println("affichage de la variable : ");
+					System.out.println(Request);
 				}
 				else if (Request.RequestType == REQUESTTYPE.MerkleRequest){
 					
 					// verfication dans le Tank de la presence du ou des fichiers
 					// verfication positive on prepare la reponse avec tout les bon elements
 					// verification negative on prepare la reponse seulement en incrementant le chemin
+					System.out.println("affichage de la variable : ");
+					System.out.println(Request);
 				}
 				
 				/*
@@ -63,10 +69,10 @@ public class Server implements MyFrame {
 				
 				
 				// reponse de la bonne reception du packet
-				byte[] rBuffer = new String(msg + "bien recu !").getBytes();
-				DatagramPacket response = new DatagramPacket(rBuffer, rBuffer.length, packet.getAddress(), packet.getPort());
-				server.send(response);
-				response.setLength(rBuffer.length);
+				//byte[] rBuffer = new String(msg + "bien recu !").getBytes();
+				//DatagramPacket response = new DatagramPacket(rBuffer, rBuffer.length, packet.getAddress(), packet.getPort());
+				//server.send(response);
+				//response.setLength(rBuffer.length);
 				
 				// debut du telechargement -> Thread performHash or performFile
 			}
