@@ -17,6 +17,8 @@ public class Server implements MyFrame {
 	 * @param port
 	 * @param addr
 	 * @throws IOException
+	 * 
+	 * Méthode réalisant la partie réception des requêtes et analyse
 	 */
 	public void udpServer  ( int port, InetAddress addr)
 	{
@@ -64,6 +66,9 @@ public class Server implements MyFrame {
 					// verification negative on prepare la reponse seulement en incrementant le chemin
 					System.out.println("affichage de la variable : ");
 					System.out.println(Request);
+					
+					
+					
 				}
 				
 				/*

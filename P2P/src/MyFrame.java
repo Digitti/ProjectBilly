@@ -1,8 +1,16 @@
 import java.math.BigInteger;
 import java.util.Arrays;
 
+/**
+ * @author KeviN
+ * 
+ */
 public interface MyFrame {
 	
+	/**
+	 * @author KeviN
+	 * 
+	 */
 	class frameUdpRequest
 	{
 		public byte lenght;							// longueur du chemin, soit le nombre de serveur rencontree
@@ -13,6 +21,10 @@ public interface MyFrame {
 		public byte[] nameOrHash = new byte[16];	// hash ou nom du fichier demander
 	}
 	
+	/**
+	 * @author KeviN
+	 * 
+	 */
 	class frameUdpResponse
 	{
 		public REQUESTTYPE RequestType;				// type de requete par nom ou racine
@@ -23,17 +35,28 @@ public interface MyFrame {
 		public byte nameFile;						// nom du fichier
 	}
 	
+	/**
+	 * @author Arnold
+	 * 
+	 */
 	public enum IPTYPE {
 		  IPV4,
 		  IPV6;
 		}
 	
+	/**
+	 * @author Arnold
+	 * 
+	 */
 	public enum REQUESTTYPE {
 		  MerkleRequest,
 		  NameRequest;
 		}
 	
-	/* méthode pour caster frameUdpRequest-->byte[] */
+	/**
+	 * @author Arnold
+	 * Méthode pour caster du type frameUdpRequest-->byte[]
+	 */
 	public static byte[] CastToByte(frameUdpRequest TransmitRequest){
 		
 		if (TransmitRequest.IpType == IPTYPE.IPV4){
@@ -98,12 +121,14 @@ public interface MyFrame {
 		}
 	}
 	
-	/* méthode pour caster byte[]-->frameUdpRequest */
+	/**
+	 * @author Arnold
+	 * Méthode pour caster byte[]-->frameUdpRequest
+	 */
 	public static frameUdpRequest CastToframeUdpRequest(byte[] rBuffer){
 		
 		
 		frameUdpRequest ReceiveRequest = new frameUdpRequest();
-		
 		
 		ReceiveRequest.lenght = rBuffer[0];
 		
@@ -148,8 +173,7 @@ public interface MyFrame {
 			
 		}
 		
-		return ReceiveRequest;
-		
+		return ReceiveRequest;	
 	}	
 	/*
     - le type de requête sur un octet : 0 pour une requête sur l'empreinte de la racine de l'arbre de Merkle, 1 pour une requête sur le nom de fichier 

@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -5,6 +6,9 @@ import java.util.Scanner;
 
 public class MyMainHost implements MyFrame {
 
+	/**
+	 * Point d'entrée pour envoyer une requete vers un pair
+	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub	
 		

@@ -5,6 +5,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * @author Arnold
+ * Classe dédiée au réservoir arbre de Merkle d'empreintes. Elle a comme fonction :
+ * - la création du dossier contenant les fichier du réservoir MerkleTree
+ * - la création de l'arbre lui-même.   
+ */
 public class MerkleTree {
 	
 	
@@ -15,12 +21,22 @@ public class MerkleTree {
 	String CheminDossierCommun;
 	String CheminDossierCommunMerkle;
 
+	/**
+	 * @author Arnold
+	 * Constructeur de la classe permettant de renseigner les attributs de la classe, à savoir :
+	 *  - Le vecteur des fichiers splités arrayHashFolder
+	 *  - Le chemin commun à tous les dossiers CheminDossierCommun
+	 */
 	public MerkleTree(ArrayList<String> arrayPathSplitHash,String[] args)
 	{
 		arrayHashFolder = arrayPathSplitHash;
 		CheminDossierCommun = args[0];
 	}
 
+	/**
+	 * @author Arnold
+	 * Méthode permettant de créer l'arbe plat en lui-même.
+	 */
 	public void CreationArbreMerkle() throws IOException
 	{
 		int NumeroFichierMerkle =0; 
@@ -63,6 +79,10 @@ public class MerkleTree {
 		}
 	}
 	
+	/**
+	 * @author Arnold
+	 * Méthode permettant de créer le dossier qui contiendra l'arbre plat
+	 */
 	public void CreationDossierMerkle() throws FileNotFoundException
 	{	
 		/**
@@ -81,14 +101,5 @@ public class MerkleTree {
 		}
 		
 		CheminDossierCommunMerkle = pathOutput.getPath();
-	}
-
-	/**
-	 * Realise l'arbre de Merkle
-	 * @param hashFolder
-	 */
-	protected static void createTree(ArrayList<String> hashFolder)
-	{
-		
 	}
 }

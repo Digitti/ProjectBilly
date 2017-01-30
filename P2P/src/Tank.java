@@ -17,6 +17,7 @@ public class Tank {
 	private static ArrayList<String> arrayPathDirectory = new ArrayList<String>();
 	private static ArrayList<String> arrayPathSplitFile = new ArrayList<String>();
 	private static ArrayList<String> arrayPathSplitHash = new ArrayList<String>();
+	private static ArrayList<String> arrayPathFlatTree = new ArrayList<String>();
 	
 	/**
 	 * 
@@ -26,6 +27,7 @@ public class Tank {
 	 */
 	public static void main(String[] args) throws NoSuchAlgorithmException, IOException {
 		
+		String pathFlatTree;
 		String pathInput = args[0];
 		System.out.println("Input Directory : " + pathInput );
 		performPath(arrayPathDirectory, pathInput);
@@ -86,6 +88,11 @@ public class Tank {
 		ArbreDeMerkle.CreationDossierMerkle();
 		ArbreDeMerkle.CreationArbreMerkle();
 		
+		/* tout ce qui concerne l'arbre plat */
+		FlatTree arbreFlatTree = new FlatTree(arrayPathSplitHash, args);
+		pathFlatTree = arbreFlatTree.CreationDossierPlatTree();
+		arbreFlatTree.CreationFlatTree();
+		performPath(arrayPathFlatTree, pathFlatTree);
 		
 	}
 	

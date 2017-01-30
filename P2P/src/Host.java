@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -19,6 +18,8 @@ public class Host implements MyFrame{
 	 * @param addr
 	 * @param port
 	 * @throws IOException
+	 * 
+	 * Méthode réalisant l'envoi de la requête UDP vers un pair
 	 */
 	public void udpHost(frameUdpRequest request)
 	{
