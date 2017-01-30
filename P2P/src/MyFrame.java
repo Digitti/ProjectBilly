@@ -125,8 +125,7 @@ public interface MyFrame {
 			
 			for (int i=0;i<(rBuffer.length-9);i++){
 				ReceiveRequest.nameOrHash[i] = rBuffer[i+9];
-			}
-			
+			}	
 		}
 		else{
 			ReceiveRequest.IpType = IPTYPE.IPV6;

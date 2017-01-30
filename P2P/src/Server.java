@@ -52,6 +52,10 @@ public class Server implements MyFrame {
 					// verification negative on prepare la reponse seulement en incrementant le chemin
 					System.out.println("affichage de la variable : ");
 					System.out.println(Request);
+					
+					/* décodage de nom */
+					String decodedHfName = new String(Request.nameOrHash, 0, Request.nameOrHash.length, "UTF-8");
+					
 				}
 				else if (Request.RequestType == REQUESTTYPE.MerkleRequest){
 					

@@ -1,3 +1,4 @@
+import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Scanner;
@@ -17,7 +18,7 @@ public class MyMainHost implements MyFrame {
 		Server s = new Server();
 		Scanner sc1 =  new Scanner(System.in);
 		
-		String hf = "bd";
+		String hf = new String("bd");
 		String ip = "127002";
 		byte[] adresse = new byte[4];
 		adresse[0] = 127;
@@ -67,7 +68,17 @@ public class MyMainHost implements MyFrame {
 		frameUdpRequest Request = new frameUdpRequest();
 		
 		Request.RequestType = REQUESTTYPE.NameRequest;		/* pour le moment on choisis une requête de type name */
-		Request.nameOrHash = hf.getBytes();	/* pour le moment on désire télécharger le fichier bd */
+		
+		/* encodage de nom de fichier en UTF-8 */
+		byte[] encodedHfWithUTF8 = null;
+		try {
+			encodedHfWithUTF8 = hf.getBytes("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Request.nameOrHash = encodedHfWithUTF8;	/* pour le moment on désire télécharger le fichier bd */
 		Request.lenght = 1;
 		Request.IpType = IPTYPE.IPV4;
 		Request.addr = adresse;
