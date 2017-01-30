@@ -46,6 +46,7 @@ public class MyJFrameServeur extends JFrame {
 	private boolean ipIsOk = false;
 	private boolean isIpV6 = false;
 	
+	
 
 	/**
 	 * Launch the application.
