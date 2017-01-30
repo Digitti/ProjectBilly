@@ -23,6 +23,13 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JFormattedTextField;
 import javax.swing.JCheckBox;
 
+
+
+
+/*
+ * IHM du serveur
+ */
+
 public class MyJFrameServeur extends JFrame {
 
 	private JPanel contentPane;
