@@ -47,6 +47,7 @@ public class MyJFrameServeur extends JFrame {
 	private boolean isIpV6 = false;
 	
 	private Server s;
+	private Thread t;
 
 	/**
 	 * Launch the application.
@@ -76,7 +77,7 @@ public class MyJFrameServeur extends JFrame {
 		
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+	
 		
 		Server s = new Server();
 		
@@ -224,7 +225,7 @@ public class MyJFrameServeur extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				if (portIsOk && ipIsOk) {
-					System.out.print("Config OK");
+					System.out.println("Config OK");
 					
 					
 					// lancement de l'ecoute serveur
@@ -232,11 +233,15 @@ public class MyJFrameServeur extends JFrame {
 					try {
 						ia = InetAddress.getByName(tf_ip.getText());
 						
-						Thread t = new Thread(new Runnable() {
+						if (t!=null) {
+							t.stop();
+						}
+						//Thread pour ne pas bloquer l'ihm pendant l'atente de reception
+						t = new Thread(new Runnable() {
 							
 							@Override
 							public void run() {
-								// TODO Auto-generated method stub
+								
 								s.udpServer(Integer.parseInt(tf_port.getText()), ia);
 							}
 						});
@@ -259,8 +264,9 @@ public class MyJFrameServeur extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Stopper l'ecoute
-				
+				if (t!=null) {
+					t.stop();
+				}
 			}
 		});
 		
