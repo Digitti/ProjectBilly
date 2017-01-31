@@ -20,7 +20,7 @@ public class Server implements MyFrame {
 	}
 	
 	/**
-	 * @author KeviN
+	 * @author KeviN et @author Arnold
 	 * @param port
 	 * @param addr
 	 * @throws IOException

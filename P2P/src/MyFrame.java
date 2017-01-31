@@ -9,7 +9,7 @@ public interface MyFrame {
 	
 	/**
 	 * @author KeviN
-	 * 
+	 * Definis la trame de la requete
 	 */
 	class frameUdpRequest
 	{
@@ -23,7 +23,7 @@ public interface MyFrame {
 	
 	/**
 	 * @author KeviN
-	 * 
+	 * Definis la trame de la reponse
 	 */
 	class frameUdpResponse
 	{
@@ -37,7 +37,7 @@ public interface MyFrame {
 	
 	/**
 	 * @author Arnold
-	 * 
+	 * Enum pour definir le type d'adresse IP
 	 */
 	public enum IPTYPE {
 		  IPV4,
@@ -46,7 +46,7 @@ public interface MyFrame {
 	
 	/**
 	 * @author Arnold
-	 * 
+	 * Enum pour definir l'objet de la recherche par empreinte ou nom de fichier
 	 */
 	public enum REQUESTTYPE {
 		  MerkleRequest,
