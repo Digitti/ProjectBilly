@@ -85,11 +85,13 @@ public class Tank {
 		 */
 		performPath(arrayPathSplitHash, pathHash);
 		
-		MerkleTree ArbreDeMerkle = new MerkleTree(arrayPathSplitHash, args);
+		/*MerkleTree ArbreDeMerkle = new MerkleTree(arrayPathSplitHash, args);
 		ArbreDeMerkle.CreationDossierMerkle();
-		ArbreDeMerkle.CreationArbreMerkle();
+		ArbreDeMerkle.CreationArbreMerkle();*/
 		
-		/* tout ce qui concerne l'arbre plat */
+		/**
+		 * realisation de flatTree
+		 */
 		FlatTree arbreFlatTree = new FlatTree(arrayPathSplitHash, args);
 		pathFlatTree = arbreFlatTree.CreationDossierPlatTree();
 		arbreFlatTree.CreationFlatTree();
