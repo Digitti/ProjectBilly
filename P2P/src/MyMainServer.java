@@ -10,7 +10,6 @@ public class MyMainServer implements MyFrame {
 	/**
 	 * @author KeviN
 	 * @param args
-	 * 
 	 * Main du programme P2P
 	 */
 	
@@ -20,6 +19,7 @@ public class MyMainServer implements MyFrame {
 		/**
 		 * Main Cote serveur
 		 */
+		
 		Server s = new Server();
 		Scanner sc =  new Scanner(System.in);
 		System.out.print("Veuillez entree l'adresse ip de votre machine : ");
@@ -29,13 +29,13 @@ public class MyMainServer implements MyFrame {
 		sc.close();
 		
 		// lancement de l'ecoute serveur
-		InetAddress ia;
+		/*InetAddress ia;
 		try {
 			ia = InetAddress.getByName(ip);
 			s.udpServer(Integer.parseInt(port), ia);
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 	}
 }
