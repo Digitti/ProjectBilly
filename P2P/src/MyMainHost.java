@@ -31,27 +31,6 @@ public class MyMainHost implements MyFrame {
 		int portClient = sc.nextInt();
 		sc.close();
 		
-		
-		/* Bloc pour faire des test, avec un serveur en thread *//*
-		Thread thread = new Thread(){
-			public void run(){
-			
-			/**
-			 * Main Cote serveur
-			 */
-			// lancement de l'ecoute serveur
-			/*InetAddress ia;
-			try {
-				ia = InetAddress.getByName(ip1);
-				s.udpServer(Integer.parseInt(port1), ia);
-			} catch (UnknownHostException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			}
-		};
-		thread.start();*/
-		
 		/* renseignement de la requête */
 		frameUdpRequest Request = new frameUdpRequest();
 		

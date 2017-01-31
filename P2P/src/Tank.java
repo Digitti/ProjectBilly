@@ -13,7 +13,7 @@ public class Tank {
 	
 	/**
 	 * @author KeviN
-	 * déclaration des tableaux contenant les différentes ressources utiles (réservoir de fichier)   
+	 * declaration des tableaux contenant les différentes ressources utiles (réservoir de fichier)   
 	 */
 	private static ArrayList<String> arrayPathDirectory = new ArrayList<String>();
 	private static ArrayList<String> arrayPathSplitFile = new ArrayList<String>();
@@ -274,7 +274,7 @@ public class Tank {
 	/**
 	 * @author Arnold 
 	 * 
-	 * Méthode permettant de récuperer le nombre de ressource initiales
+	 * Methode permettant de récuperer le nombre de ressource initiales
 	 */
 	protected static int GetNumberOfFiles(String decodedHfName){
 		

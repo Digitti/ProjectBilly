@@ -11,9 +11,9 @@ import java.util.ArrayList;
 
 /**
  * @author Arnold
- * Classe dédiée au réservoir arbre plat d'empreintes. Elle a comme fonction :
- * - la création du dossier contenant les fichier du réservoir FlatTree
- * - la création de l'arbre lui-même (hachage de la concaténation des fichiers splités hachés, voir la solution numéro 2 du sujet.   
+ * Classe dediee au réservoir arbre plat d'empreintes. Elle a comme fonction :
+ * - la création du dossier contenant les fichier du reservoir FlatTree
+ * - la création de l'arbre lui-meme (hachage de la concaténation des fichiers splités haches, voir la solution numéro 2 du sujet.   
  */
 public class FlatTree {
 
@@ -25,9 +25,9 @@ public class FlatTree {
 	
 	/**
 	 * @author Arnold
-	 * Constructeur de la classe permettant de renseigner les attributs de la classe, à savoir :
-	 *  - Le vecteur des fichiers splités arrayHashFolder
-	 *  - Le chemin commun à tous les dossiers CheminDossierCommun
+	 * Constructeur de la classe permettant de renseigner les attributs de la classe, a savoir :
+	 *  - Le vecteur des fichiers splites arrayHashFolder
+	 *  - Le chemin commun a tous les dossiers CheminDossierCommun
 	 */
 	public FlatTree(ArrayList<String> arrayPathSplitHash,String args){
 		arrayHashFolder = arrayPathSplitHash;
@@ -36,9 +36,9 @@ public class FlatTree {
 
 	/**
 	 * @author Arnold
-	 * Méthode permettant de créer l'arbe plat en lui-même. Cela consiste tout d'abord à parcour l'ensemble des fichier
-	 * du dossier des fichiers splités hachés, puis de concaténer tous les fichier hachés d'une même source, pour enfin
-	 * haché cette con,concaténation. Cela constitue la racine de l'arbre.
+	 * Méthode permettant de creer l'arbe plat en lui-meme. Cela consiste tout d'abord à parcour l'ensemble des fichier
+	 * du dossier des fichiers splites haches, puis de concaténer tous les fichier hachés d'une meme source, pour enfin
+	 * haché cette con,concatenation. Cela constitue la racine de l'arbre.
 	 */
 	public void CreationFlatTree() throws IOException
 	{
@@ -104,7 +104,7 @@ public class FlatTree {
 
 	/**
 	 * @author Arnold
-	 * Méthode permettant de créer le dossier qui contiendra l'arbre plat
+	 * Méthode permettant de creer le dossier qui contiendra l'arbre plat
 	 */
 	public String CreationDossierPlatTree() throws FileNotFoundException
 	{	
@@ -130,7 +130,7 @@ public class FlatTree {
 
 	/**
 	 * @author Arnold
-	 * Méthode utilisée pour concaténer deux fichiers ensemble
+	 * Méthode utilisee pour concaténer deux fichiers ensemble
 	 */
 	public void writeFusionFiles(OutputStream out1, InputStream sourceFiles1) throws IOException {
 		

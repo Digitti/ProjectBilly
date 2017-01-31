@@ -26,7 +26,7 @@ public class Host implements MyFrame{
 	 * @param port
 	 * @throws IOException
 	 * 
-	 * Méthode réalisant l'envoi de la requête UDP vers un pair
+	 * Méthode realisant l'envoi de la requete UDP vers un pair
 	 */
 	public void udpHost(frameUdpRequest request)
 	{

@@ -7,9 +7,9 @@ import java.util.ArrayList;
 
 /**
  * @author Arnold
- * Classe dédiée au réservoir arbre de Merkle d'empreintes. Elle a comme fonction :
+ * Classe dédiée au reservoir arbre de Merkle d'empreintes. Elle a comme fonction :
  * - la création du dossier contenant les fichier du réservoir MerkleTree
- * - la création de l'arbre lui-même.   
+ * - la création de l'arbre lui-meme.   
  */
 public class MerkleTree {
 	
