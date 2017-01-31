@@ -21,17 +21,23 @@ public class Tank {
 	private static ArrayList<String> arrayPathFlatTree = new ArrayList<String>();
 	
 	
-	/**
-	 * @author KeviN	@author Arnold
-	 * Ce Main permet de tester de facon independante les methodes de classe !!!
-	 * @param args
-	 * @throws NoSuchAlgorithmException
-	 * @throws IOException
-	 */
-	public static void main(String[] args) throws NoSuchAlgorithmException, IOException {
+	
+	public Tank() {
 		
+	}
+	
+	/**
+	 * @author KeviN
+	 * @param mainDirectory
+	 * @throws IOException
+	 * @throws NoSuchAlgorithmException
+	 * Methode appeler pour realiser les dossier des differentes etapes Split, Hash et FlatTree
+	 */
+	
+	public static void initialiseTank(String mainDirectory) throws IOException, NoSuchAlgorithmException
+	{
 		String pathFlatTree;
-		String pathInput = args[0];
+		String pathInput = mainDirectory;
 		System.out.println("Input Directory : " + pathInput );
 		performPath(arrayPathDirectory, pathInput);
 		
@@ -94,11 +100,10 @@ public class Tank {
 		/**
 		 * realisation de flatTree
 		 */
-		FlatTree arbreFlatTree = new FlatTree(arrayPathSplitHash, args);
+		FlatTree arbreFlatTree = new FlatTree(arrayPathSplitHash, mainDirectory);
 		pathFlatTree = arbreFlatTree.CreationDossierPlatTree();
 		arbreFlatTree.CreationFlatTree();
 		performPath(arrayPathFlatTree, pathFlatTree);
-		
 	}
 	
 	

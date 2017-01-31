@@ -29,9 +29,9 @@ public class FlatTree {
 	 *  - Le vecteur des fichiers splités arrayHashFolder
 	 *  - Le chemin commun à tous les dossiers CheminDossierCommun
 	 */
-	public FlatTree(ArrayList<String> arrayPathSplitHash,String[] args){
+	public FlatTree(ArrayList<String> arrayPathSplitHash,String args){
 		arrayHashFolder = arrayPathSplitHash;
-		CheminDossierCommun = args[0];
+		CheminDossierCommun = args;
 	}
 
 	/**
