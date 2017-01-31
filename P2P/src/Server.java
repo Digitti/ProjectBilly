@@ -149,6 +149,7 @@ public class Server implements MyFrame {
 				// fichier a envoye
 				OutputStream os =  new FileOutputStream(sendFile);
 				System.out.print("Envoie du fichier ");
+				
 				int count;
 				byte[] buffer = new byte[4096];
 				while ((count = is.read(buffer)) > 0)
@@ -159,10 +160,10 @@ public class Server implements MyFrame {
 				System.out.println("");
 				System.out.println("Envoi termine !");
 				
-				os.close();
+				/*os.close();
 				is.close();
 				client.close();
-				server.close();
+				server.close();*/
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

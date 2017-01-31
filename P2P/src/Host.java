@@ -84,7 +84,7 @@ public class Host implements MyFrame{
 	 * @param nameFile
 	 * Download des fichiers : telechargement des fichiers apres recherche des fichiers
 	 */
-	public void tcpHost(InetAddress server, int port, String nameFile)
+	public void tcpHost(String server, int port, String nameFile)
 	{
 		try {
 			// initialisation d'une connexion cote client TCP
@@ -97,6 +97,7 @@ public class Host implements MyFrame{
 				InputStream is = new FileInputStream(f);
 		        OutputStream os = host.getOutputStream();
 		        System.out.print("Reception du fichier en cours ");
+		        
 		        int count;
 		        byte[] buffer = new byte[4096]; 
 		        while ((count = is.read(buffer)) > 0)
@@ -106,6 +107,10 @@ public class Host implements MyFrame{
 		        }
 		        System.out.println("");
 		        System.out.println("Reception termine !");
+		        
+		        /*os.close();
+		        is.close();
+		        host.close();*/
 			}
 			
 		} catch (IOException e) {
