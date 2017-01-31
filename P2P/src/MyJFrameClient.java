@@ -1,6 +1,7 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.UnsupportedEncodingException;
@@ -20,6 +21,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.SwingConstants;
 
 
 public class MyJFrameClient extends JFrame implements MyFrame {
@@ -64,14 +66,15 @@ public class MyJFrameClient extends JFrame implements MyFrame {
 	 */
 	public MyJFrameClient() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 400);
+		setTitle("Peer 2 Peer EISC (Client)");
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		//Rajouter cette ligne pour tester avec un serveur en meme temps
-		//MyJFrameServeur mjs = new MyJFrameServeur();
+		MyJFrameServeur mjs = new MyJFrameServeur();
 		
 		host = new Host();
 		
@@ -136,6 +139,23 @@ public class MyJFrameClient extends JFrame implements MyFrame {
 		btn_cancel.setBackground(new Color(255, 51, 0));
 		btn_cancel.setBounds(353, 11, 71, 33);
 		contentPane.add(btn_cancel);
+		
+		JSeparator separator = new JSeparator();
+		separator.setBounds(10, 263, 414, 2);
+		contentPane.add(separator);
+		
+		JLabel lblLogs = new JLabel("Logs");
+		lblLogs.setBounds(10, 270, 46, 14);
+		contentPane.add(lblLogs);
+		
+		JLabel lb_logs = new JLabel("..");
+		lb_logs.setBackground(Color.WHITE);
+		lb_logs.setFont(new Font("Arial", Font.ITALIC, 10));
+		lb_logs.setVerticalAlignment(SwingConstants.TOP);
+		lb_logs.setBounds(10, 287, 414, 63);
+		contentPane.add(lb_logs);
+		
+		
 		
 		
 		
@@ -217,119 +237,123 @@ public class MyJFrameClient extends JFrame implements MyFrame {
 		
 		
 		//Listener du bouton SEND
-				btn_listen.addActionListener(new ActionListener() {
+		btn_listen.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				//Test des entrees port et ip ok
+				if (portIsOk && ipIsOk) {
 					
-					@Override
-					public void actionPerformed(ActionEvent e) {
+					//Test texte dans name
+					if (tf_name.getText()!=null && (tf_name.getText()!="")) { //Si ok, lancement requette avec nom
 						
-						//Test des entrees port et ip ok
-						if (portIsOk && ipIsOk) {
-							
-							//Test texte dans name
-							if (tf_name.getText()!=null && (tf_name.getText()!="")) { //Si ok, lancement requette avec nom
-								
-								System.out.println("Recherche via name");
-								
-								/* renseignement de la requête */
-								frameUdpRequest Request = new frameUdpRequest();
-								
-								Request.RequestType = REQUESTTYPE.NameRequest; //Request via name
-								
-								try {
-									Request.nameOrHash = tf_name.getText().getBytes("UTF-8");
-								} catch (UnsupportedEncodingException e1) {
-									e1.printStackTrace();
-								};
-								Request.lenght = 1;
-								Request.IpType = IPTYPE.IPV4;
-								
-								//Transformation de l'adresse en byte, pas de prise en charge de l'ipv6 ici
-								byte[] addr_in_bytes = new byte[4];
-								for (int i =0; i<4; i++) {
-									int o = Integer.valueOf(tf_ip.getText().split("\\.")[i]);
-									addr_in_bytes[i] = (byte) o;
-								}
-								Request.addr = addr_in_bytes;
-								Request.port = Integer.valueOf(tf_port.getText());
-								
-								//Securite
-								if (t!=null) {
-									t.stop();
-								}
-								/* On transmet la requête */
-								t = new Thread(new Runnable() {
-									
-									@Override
-									public void run() {
-
-										host.udpHost(Request);
-									}
-								});
-								t.start();
-								
-								
-							//Sinon test texte dans print
-							} else if (tf_print.getText()!=null && (tf_print.getText()!="")) {
-								
-								System.out.println("Recherche via empreinte");
-								
-								/* renseignement de la requête */
-								frameUdpRequest Request = new frameUdpRequest();
-								
-								Request.RequestType = REQUESTTYPE.MerkleRequest; //Request via name
-								
-								try {
-									Request.nameOrHash = tf_print.getText().getBytes("UTF-8");
-								} catch (UnsupportedEncodingException e1) {
-									e1.printStackTrace();
-								};	/* pour le moment on désire télécharger le fichier bd */
-								Request.lenght = 1;
-								Request.IpType = IPTYPE.IPV4;
-								
-								//Transformation de l'adresse en byte, pas de prise en charge de l'ipv6 ici
-								byte[] addr_in_bytes = new byte[4];
-								for (int i =0; i<4; i++) {
-									int o = Integer.valueOf(tf_ip.getText().split("\\.")[i]);
-									addr_in_bytes[i] = (byte) o;
-								}
-								Request.addr = addr_in_bytes;
-								Request.port = Integer.valueOf(tf_port.getText());
-								
-								if (t!=null) {
-									t.stop();
-								}
-								/* On transmet la requête */
-								t = new Thread(new Runnable() {
-									
-									@Override
-									public void run() {
-
-										host.udpHost(Request);
-									}
-								});
-								t.start();
-								
-							//Sinon erreur
-							} else {
-								System.out.println("Champs name et print vides");
-							}
-							
-						} else {
-							System.out.print("Wrong config");
-						}
-					}
-				});
-		
-		
-				//Bouton cancel, pratique lors d'envoi de message en boucle pendant les tests
-				btn_cancel.addActionListener(new ActionListener() {
-					
-					@Override
-					public void actionPerformed(ActionEvent e) {
+						System.out.println("Recherche via name");
+						
+						/* renseignement de la requête */
+						frameUdpRequest Request = new frameUdpRequest();
+						
+						Request.RequestType = REQUESTTYPE.NameRequest; //Request via name
+						
+						try {
+							Request.nameOrHash = tf_name.getText().getBytes("UTF-8");
+						} catch (UnsupportedEncodingException e1) {
+							e1.printStackTrace();
+						};
+						Request.lenght = 1;
+						Request.IpType = IPTYPE.IPV4;
+						
+						//Transformation de l'adresse en byte, pas de prise en charge de l'ipv6 ici
+						//byte[] addr_in_bytes = new byte[4];
+						//for (int i =0; i<4; i++) {
+						//	int o = Integer.valueOf(tf_ip.getText().split("\\.")[i]);
+						//	addr_in_bytes[i] = (byte) o;
+						//}
+						//Request.addr = addr_in_bytes;
+						Request.addr = tf_ip.getText().getBytes();
+						Request.port = Integer.valueOf(tf_port.getText());
+						
+						//Securite
 						if (t!=null) {
 							t.stop();
 						}
+						/* On transmet la requête */
+						t = new Thread(new Runnable() {
+							
+							@Override
+							public void run() {
+
+								host.udpHost(Request);
+							}
+						});
+						t.start();
+						lb_logs.setText(lb_logs.getText()+"\nSearch for "+tf_name.getText()+" with "+tf_ip.getText()+"-"+tf_port.getText()+"\n");
+						
+						
+						
+					//Sinon test texte dans print
+					} else if (tf_print.getText()!=null && (tf_print.getText()!="")) {
+						
+						System.out.println("Recherche via empreinte");
+						
+						/* renseignement de la requête */
+						frameUdpRequest Request = new frameUdpRequest();
+						
+						Request.RequestType = REQUESTTYPE.MerkleRequest; //Request via name
+						
+						try {
+							Request.nameOrHash = tf_print.getText().getBytes("UTF-8");
+						} catch (UnsupportedEncodingException e1) {
+							e1.printStackTrace();
+						};	/* pour le moment on désire télécharger le fichier bd */
+						Request.lenght = 1;
+						Request.IpType = IPTYPE.IPV4;
+						
+						//Transformation de l'adresse en byte, pas de prise en charge de l'ipv6 ici
+						byte[] addr_in_bytes = new byte[4];
+						for (int i =0; i<4; i++) {
+							int o = Integer.valueOf(tf_ip.getText().split("\\.")[i]);
+							addr_in_bytes[i] = (byte) o;
+						}
+						Request.addr = addr_in_bytes;
+						Request.port = Integer.valueOf(tf_port.getText());
+						
+						if (t!=null) {
+							t.stop();
+						}
+						/* On transmet la requête */
+						t = new Thread(new Runnable() {
+							
+							@Override
+							public void run() {
+
+								host.udpHost(Request);
+							}
+						});
+						t.start();
+						lb_logs.setText("Search for "+tf_print.getText()+" with "+tf_ip.getText()+"-"+tf_port.getText());
+						
+					//Sinon erreur
+					} else {
+						System.out.println("Champs name et print vides");
 					}
-				});
+					
+				} else {
+					System.out.print("Wrong config");
+				}
+			}
+		});
+		
+		
+		//Bouton cancel, pratique lors d'envoi de message en boucle pendant les tests
+		btn_cancel.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (t!=null) {
+					t.stop();
+				}
+			}
+		});
 	}
 }
