@@ -19,6 +19,7 @@ public class Tank {
 	private static ArrayList<String> arrayPathSplitHash = new ArrayList<String>();
 	private static ArrayList<String> arrayPathFlatTree = new ArrayList<String>();
 	
+	
 	/**
 	 * @author KeviN	@author Arnold
 	 * Ce Main permet de tester de facon independante les methodes de classe !!!
@@ -239,7 +240,27 @@ public class Tank {
 			}	
 			NumeroFichierHash =0;
 		}	
+	}
+	
+	/**
+	 * @author Arnold 
+	 * 
+	 * Méthode permettant de vérifier si le fichier demandé est dans le réservoir de fichier
+	 */
+	protected static boolean FileNameTestEquals(String decodedHfName){
 		
+		/* Il s'agit dans cette partie de parcourir l'ensemble des fichiers splits du dossier split pour calculer les hashs de chaque fichiers */
+		for(int i = 0; i < arrayPathFlatTree.size(); i++)
+		{
+			/* on récupère le nom de chaque dossier que nous avons dans le dossier pour le comparer à la demande */
+			File DossierCourant = new File(arrayPathFlatTree.get(i));
+			String FolderName = DossierCourant.getName();
+			
+			if (decodedHfName.equals(FolderName)){
+				return true;
+			}
+		}
+		return false;
 	}
 }
 		

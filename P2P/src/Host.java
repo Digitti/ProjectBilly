@@ -31,24 +31,24 @@ public class Host implements MyFrame{
 		while(true)
 		{
 			try {
-				Thread.sleep(3000);
+				Thread.sleep(1000);
 				
 				// initialisation d'une connexion cote client UDP
 				DatagramSocket host = new DatagramSocket();
 				System.out.println("Le client est lancé !");
 				
-				InetAddress ipAddr = InetAddress.getByAddress(request.addr);
-				//InetAddress ipAddr = InetAddress.;
+				/* décode en UTF-8 l'adresse stocké dans un tableau de byte, afin d'en obtenir l'adresse en InetAddress*/
+				InetAddress ipAddr = InetAddress.getByName(new String(request.addr, 0, request.addr.length, "UTF-8"));
 				
+				/* la requête est casté au format d'un tableau de byte pour être envoyé parl a socket UDP */
 				byte[] tBuffer = new byte[(MyFrame.CastToByte(request).length)];
 				tBuffer = MyFrame.CastToByte(request);
-				
 				DatagramPacket packet = new DatagramPacket(tBuffer, tBuffer.length, ipAddr, request.port);
 				
-				// affectation des donnees au packet
+				/* affectation des donnees au packet */
 				packet.setData(tBuffer);
 				
-				// envoi au serveur
+				/* envoi des données */
 				host.send(packet);
 				System.out.println("Un message vient d'etre envoyer !");
 				

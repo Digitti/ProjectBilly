@@ -176,6 +176,28 @@ public interface MyFrame {
 		return ReceiveRequest;	
 	}	
 	/*
+	  public static long convertToInteger(byte[] Adress){ 
+
+		  long ipDec = 0;
+		  
+		  byte[] ip  = ia.getAddress();
+		  int w = 0, x = 0, y = 0, z = 0;
+		  
+		  //conversion to int
+		  w = ip[3] & 0xFF;
+		  x = ip[2] & 0xFF;
+		  y = ip[1] & 0xFF;
+		  z = ip[0] & 0xFF;
+		  
+		  //convert to decimal
+		  ipDec = (long)z + (long)(y*(Math.pow(2, 8))) + 
+		    (long)(x*(Math.pow(2, 16))) +
+		    (long)(w*(Math.pow(2, 24)));
+		  
+		  return ipDec;
+		 }
+	*/
+	/*
     - le type de requête sur un octet : 0 pour une requête sur l'empreinte de la racine de l'arbre de Merkle, 1 pour une requête sur le nom de fichier 
 
     - pour une requête sur empreinte, on indique les 16 premiers octets de l'empreintes (128 bits) 

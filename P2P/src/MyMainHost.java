@@ -22,33 +22,16 @@ public class MyMainHost implements MyFrame {
 		Server s = new Server();
 		Scanner sc1 =  new Scanner(System.in);
 		
-		String hf = new String("bd");
-		String ip = "127002";
-		byte[] adresse = new byte[4];
-		adresse[0] = 127;
-		adresse[1] = 0;
-		adresse[2] = 0;
-		adresse[3] = 1;
-		int port = 10005;
-		//System.out.print("Veuillez entree le hash ou le nom du fichier : ");
-		//String hf = sc.nextLine();
-		//System.out.print("Veuillez entree l'adresse ip du votre serveur demander : ");
-		//String ip = sc.nextLine();
-		//System.out.print("Veuillez entree le port d'ecoute souhaiter :  ");
-		//int port = sc.nextInt();
-		//sc.close();
-		
-		/* lancement du serveur pour test */
-		String ip1 = "127.0.0.1";
-		String port1 = "10005";
-		//System.out.print("Veuillez entree l'adresse ip de votre machine : ");
-		//String ip1 =  sc1.nextLine();
-		//System.out.print("Veuillez entree le port d'ecoute souhaiter : ");
-		//String port1 = sc1.nextLine();
+		System.out.print("Veuillez entree le hash ou le nom du fichier : ");
+		String hf = sc.nextLine();
+		System.out.print("Veuillez entree l'adresse ip du votre serveur demander : ");
+		String ip = sc.nextLine();
+		System.out.print("Veuillez entree le port d'ecoute souhaiter :  ");
+		int port = sc.nextInt();
 		sc.close();
-		sc1.close();
 		
-		/* lancement du serveur pour test */
+		
+		/* Bloc pour faire des test, avec un serveur en thread *//*
 		Thread thread = new Thread(){
 			public void run(){
 			
@@ -56,7 +39,7 @@ public class MyMainHost implements MyFrame {
 			 * Main Cote serveur
 			 */
 			// lancement de l'ecoute serveur
-			InetAddress ia;
+			/*InetAddress ia;
 			try {
 				ia = InetAddress.getByName(ip1);
 				s.udpServer(Integer.parseInt(port1), ia);
@@ -66,7 +49,7 @@ public class MyMainHost implements MyFrame {
 			}
 			}
 		};
-		thread.start();
+		thread.start();*/
 		
 		/* renseignement de la requête */
 		frameUdpRequest Request = new frameUdpRequest();
@@ -85,7 +68,7 @@ public class MyMainHost implements MyFrame {
 		Request.nameOrHash = encodedHfWithUTF8;	/* pour le moment on désire télécharger le fichier bd */
 		Request.lenght = 1;
 		Request.IpType = IPTYPE.IPV4;
-		Request.addr = adresse;
+		Request.addr = ip.getBytes(); // 127.0.0.1
 		Request.port = port;
 		
 		/* On transmet la requête */

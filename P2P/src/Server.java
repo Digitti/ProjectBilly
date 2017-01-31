@@ -4,13 +4,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
-
 
 public class Server implements MyFrame {
 
@@ -29,7 +29,7 @@ public class Server implements MyFrame {
 	public void udpServer  ( int port, InetAddress addr)
 	{
 		try {
-			// creation de la connexion serveur UDP
+			/* Création de la socket utilisé pour envoyer les données au serveur */
 			DatagramSocket server = new DatagramSocket(port, addr);
 			System.out.println("La recherche de fichier est lancé !");
 			while(true)
@@ -53,16 +53,56 @@ public class Server implements MyFrame {
 				Request = MyFrame.CastToframeUdpRequest(receiveBuffer);
 				
 				if (Request.RequestType == REQUESTTYPE.NameRequest){
-					
-					// verfication dans le Tank de la presence du ou des fichiers
-					// verfication positive on prepare la reponse avec tout les bon elements
-					// verification negative on prepare la reponse seulement en incrementant le chemin
-					System.out.println("affichage de la variable : ");
-					System.out.println(Request);
-					
-					/* décodage de nom */
+									
+					/* décodage de nom via le codage UTF-8 */
 					String decodedHfName = new String(Request.nameOrHash, 0, Request.nameOrHash.length, "UTF-8");
 					
+					/* test l'existence d'un dossier portant le même nom quedans la requête */
+					boolean Test = Tank.FileNameTestEquals(decodedHfName);
+					
+					/* vérification positive : on prepare la réponse positive et le téléchargement
+					 * vérification négative : on prepare la réponse négative
+					 */
+					if (Test == true){
+						
+												
+						/* Réponse via une trame frameUdpResponse */
+						/*
+						byte[] rBuffer = new String(msg + "bien recu !").getBytes();
+						DatagramPacket response = new DatagramPacket(rBuffer, rBuffer.length, packet.getAddress(), packet.getPort());
+						server.send(response);
+						response.setLength(rBuffer.length);
+						*/
+						
+						/* on instancie et remplit l'objet/trame de réponse */
+						frameUdpResponse Response = new frameUdpResponse();
+						
+						Response.RequestType = REQUESTTYPE.NameRequest;
+						
+						byte[] encodedHfWithUTF8 = null;
+						try {
+							encodedHfWithUTF8 = decodedHfName.getBytes("UTF-8");
+						} catch (UnsupportedEncodingException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+						Response.nameOrHash = encodedHfWithUTF8;
+						
+					}
+					else{
+						// verification negative on prepare la reponse seulement en incrementant le chemin
+						
+						/* Réponse via une trame frameUdpResponse */
+						/*
+						byte[] rBuffer = new String(msg + "bien recu !").getBytes();
+						DatagramPacket response = new DatagramPacket(rBuffer, rBuffer.length, packet.getAddress(), packet.getPort());
+						server.send(response);
+						response.setLength(rBuffer.length);
+						*/
+					}
+					
+
 				}
 				else if (Request.RequestType == REQUESTTYPE.MerkleRequest){
 					
@@ -73,20 +113,7 @@ public class Server implements MyFrame {
 					System.out.println(Request);
 					
 					
-					
 				}
-				
-				/*
-				Request.nameOrHash = new String("bd").getBytes();	/* pour le moment on désire télécharger le fichier bd *//*
-				Request.lenght = 1;
-				*/
-				
-				
-				// reponse de la bonne reception du packet
-				//byte[] rBuffer = new String(msg + "bien recu !").getBytes();
-				//DatagramPacket response = new DatagramPacket(rBuffer, rBuffer.length, packet.getAddress(), packet.getPort());
-				//server.send(response);
-				//response.setLength(rBuffer.length);
 				
 				// debut du telechargement -> Thread performHash or performFile
 			}
