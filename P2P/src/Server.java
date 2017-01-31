@@ -132,39 +132,34 @@ public class Server implements MyFrame {
 	 * @param sendFile
 	 * Telechargement des fichiers : Envoie des fichier apres la recherche des fichiers
 	 */
-	public void tcpServer(int port, String sendFile)
+	public void tcpServer(String host, int port, String sendFile)
 	{
 		try {
-			// creation de la connexion serveur TCP
-			ServerSocket server = new ServerSocket(port);
-			System.out.println("Le telechargement est lance");
-			while(true)
-			{
-				// accepte une connexion avec le client
-				Socket client = server.accept();
-				
-				// ecriture de donnee a destination du client 
-				InputStream is = client.getInputStream();
-				
-				// fichier a envoye
-				OutputStream os =  new FileOutputStream(sendFile);
-				System.out.print("Envoie du fichier ");
-				
-				int count;
-				byte[] buffer = new byte[4096];
-				while ((count = is.read(buffer)) > 0)
-				{
-				  os.write(buffer, 0, count);
-				  System.out.print(".");
-				}
-				System.out.println("");
-				System.out.println("Envoi termine !");
-				
-				/*os.close();
-				is.close();
-				client.close();
-				server.close();*/
-			}
+			// initialisation d'une connexion cote client TCP
+			Socket socket = new Socket(host, port);
+			System.out.println("Le telechargement est lance !");
+			
+			// lecture de donnee en provenance du serveur
+			File file = new File(sendFile);
+	        byte[] buffer = new byte[8192]; 
+			InputStream in = new FileInputStream(file);
+	        OutputStream out = socket.getOutputStream();
+	        System.out.print("Reception du fichier en cours ");
+	        
+	        int count;
+	        while ((count = in.read(buffer)) > 0)
+	        {
+	          out.write(buffer, 0, count);
+	          System.out.print(".");
+	        }
+	        System.out.println("");
+	        System.out.println("Envoi termine !");
+	        
+	        out.close();
+	        in.close();
+	        socket.close();
+			
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

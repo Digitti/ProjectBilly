@@ -1,11 +1,13 @@
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 
@@ -84,34 +86,38 @@ public class Host implements MyFrame{
 	 * @param nameFile
 	 * Download des fichiers : telechargement des fichiers apres recherche des fichiers
 	 */
-	public void tcpHost(String server, int port, String nameFile)
+	public void tcpHost(int port, String receiveFile)
 	{
 		try {
-			// initialisation d'une connexion cote client TCP
-			Socket host = new Socket(server, port);
-			System.out.println("Le telechargement est lance");
-			while(true)
-			{	
-				// lecture de donnee en provenance du serveur
-				File f = new File(nameFile);
-				InputStream is = new FileInputStream(f);
-		        OutputStream os = host.getOutputStream();
-		        System.out.print("Reception du fichier en cours ");
-		        
-		        int count;
-		        byte[] buffer = new byte[4096]; 
-		        while ((count = is.read(buffer)) > 0)
-		        {
-		          os.write(buffer, 0, count);
-		          System.out.print(".");
-		        }
-		        System.out.println("");
-		        System.out.println("Reception termine !");
-		        
-		        /*os.close();
-		        is.close();
-		        host.close();*/
+			// creation de la connexion serveur TCP
+			ServerSocket serverSocket = new ServerSocket(port);
+			System.out.println("Le telechargement est lance !");
+			
+			// accepte une connexion avec le client
+			Socket socket = serverSocket.accept();
+			
+			// ecriture de donnee a destination du client 
+			InputStream in = socket.getInputStream();
+			
+			// fichier a envoye
+			OutputStream out =  new FileOutputStream(receiveFile);
+			System.out.print("Envoie du fichier ");
+			
+			byte[] buffer = new byte[8192];
+			
+			int count;
+			while ((count = in.read(buffer)) > 0)
+			{
+			  out.write(buffer, 0, count);
+			  System.out.print(".");
 			}
+			System.out.println("");
+			System.out.println("Envoi termine !");
+			
+			out.close();
+			in.close();
+			socket.close();
+			serverSocket.close();
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
