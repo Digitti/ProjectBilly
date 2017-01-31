@@ -39,7 +39,7 @@ public class Tank {
 		 */
 		File pathFolder = new File(pathInput);
 		String pathParent = pathFolder.getParent();
-		File pathOutput = new File(pathParent+"\\"+pathFolder.getName()+"Split");
+		File pathOutput = new File(pathParent+getOperatinSystem()+pathFolder.getName()+"Split");
 		String pathSplit = pathOutput.getPath();
 		
 		if(pathOutput.mkdir())
@@ -54,7 +54,7 @@ public class Tank {
 		/**
 		 *  Création du dossier contenant les empreintes des morceaux de fichiers
 		 */
-		File pathOutputHash = new File(pathParent+"\\"+pathFolder.getName()+"Hash");	
+		File pathOutputHash = new File(pathParent+getOperatinSystem()+pathFolder.getName()+"Hash");	
 		String pathHash = pathOutputHash.getPath();
 		
 		if(pathOutputHash.mkdir())
@@ -86,11 +86,13 @@ public class Tank {
 		 */
 		performPath(arrayPathSplitHash, pathHash);
 		
-		MerkleTree ArbreDeMerkle = new MerkleTree(arrayPathSplitHash, args);
+		/*MerkleTree ArbreDeMerkle = new MerkleTree(arrayPathSplitHash, args);
 		ArbreDeMerkle.CreationDossierMerkle();
-		ArbreDeMerkle.CreationArbreMerkle();
+		ArbreDeMerkle.CreationArbreMerkle();*/
 		
-		/* tout ce qui concerne l'arbre plat */
+		/**
+		 * realisation de flatTree
+		 */
 		FlatTree arbreFlatTree = new FlatTree(arrayPathSplitHash, args);
 		pathFlatTree = arbreFlatTree.CreationDossierPlatTree();
 		arbreFlatTree.CreationFlatTree();
@@ -152,7 +154,7 @@ public class Tank {
 			System.out.println("Le fichier "+f.getName()+" est de taille : "+ lengthFile + " octets");
 			
 			//Cree un dossier pour les split du fichier selectionner
-			File splitFolder = new File(pathSplit+"\\"+f.getName());
+			File splitFolder = new File(pathSplit+getOperatinSystem()+f.getName());
 			String pathSplitFile = splitFolder.getPath();
 			
 			if(splitFolder.mkdir())
@@ -172,7 +174,7 @@ public class Tank {
 				{
 					byte[] buffer = new byte[4096];
 					fis.read(buffer, 0, 4096);
-					fos = new FileOutputStream(pathSplitFile+"\\"+f.getName()+".split"+cptSplit);
+					fos = new FileOutputStream(pathSplitFile+getOperatinSystem()+f.getName()+".split"+cptSplit);
 					fos.write(buffer);
 					fos.flush();
 					cptSplit++;
@@ -206,7 +208,7 @@ public class Tank {
 			File DossierCourant = new File(ListeDossierFichierSplit.get(i));
 			
 			/* creation du dossier contenant les empreintes des morceaux d'un même fichiers */
-			File DossierHashCourant = new File(pathHash+"\\"+DossierCourant.getName());
+			File DossierHashCourant = new File(pathHash+getOperatinSystem()+DossierCourant.getName());
 			
 			if(DossierHashCourant.mkdir())
 			{
@@ -223,7 +225,7 @@ public class Tank {
 				/* mis à jour des flux d'entres et de sortie */
 				FileInputStream FichierSplitCourant = new FileInputStream(FichierSplitcourant);
 				String NomFichierSplitCourantRaccourcis = FichierSplitcourant.getName().substring(0, FichierSplitcourant.getName().length()-7);
-				FileOutputStream HashCourant = new FileOutputStream(DossierHashCourant.getAbsolutePath()+"\\"+NomFichierSplitCourantRaccourcis+".hash"+NumeroFichierHash); 
+				FileOutputStream HashCourant = new FileOutputStream(DossierHashCourant.getAbsolutePath()+getOperatinSystem()+NomFichierSplitCourantRaccourcis+".hash"+NumeroFichierHash); 
 				
 				/* Bloc réalisant le hash de chaque morceaux (l'entrée à hasher est renseigné et mis à jour par la variable : FichierSplitCourant ) */
 				String NomFichierSplitCourant = FichierSplitCourant.toString();
@@ -261,6 +263,26 @@ public class Tank {
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * @author KeviN
+	 * @return
+	 * Retourne le format de chemin selon le systeme d'exploitation
+	 */
+	public static String getOperatinSystem()
+	{
+		String TAGWIN = "\\";
+		String TAGLIN = "/";
+		String nameOS = System.getProperty("os.name");  
+		if(nameOS.contains("Windows"))
+		{
+			return TAGWIN;
+		}
+		else
+		{
+			return TAGLIN;
+		}
 	}
 }
 		
