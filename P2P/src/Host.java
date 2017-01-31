@@ -101,7 +101,7 @@ public class Host implements MyFrame{
 			
 			// fichier a envoye
 			OutputStream out =  new FileOutputStream(receiveFile);
-			System.out.print("Envoie du fichier ");
+			System.out.print("Reception du fichier ");
 			
 			byte[] buffer = new byte[8192];
 			
@@ -112,7 +112,7 @@ public class Host implements MyFrame{
 			  System.out.print(".");
 			}
 			System.out.println("");
-			System.out.println("Envoi termine !");
+			System.out.println("Reception termine !");
 			
 			out.close();
 			in.close();

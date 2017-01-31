@@ -42,13 +42,14 @@ public class FlatTree {
 	 */
 	public void CreationFlatTree() throws IOException
 	{
+		Tank t = new Tank();
 		/* Il s'agit dans cette partie de parcourir l'ensemble des fichiers hash du dossier hash pour calculer les hashs de chaque fichiers */
 		for(int i = 0; i < arrayHashFolder.size(); i++)
 		{
 			File DossierCourant = new File(arrayHashFolder.get(i));
 
 			/* creation du dossier contenant les empreintes des morceaux d'un même fichiers */
-			File DossierFlatTreeCourant = new File(CheminDossierCommunFlatTree+"\\"+DossierCourant.getName());
+			File DossierFlatTreeCourant = new File(CheminDossierCommunFlatTree+t.getOperatinSystem()+DossierCourant.getName());
 
 			if(DossierFlatTreeCourant.mkdir())
 			{
@@ -59,7 +60,7 @@ public class FlatTree {
 				System.out.println("Output directory already exists");
 			}	
 			
-			OutputStream out = new FileOutputStream(DossierFlatTreeCourant.getAbsolutePath()+"\\"+DossierCourant.getName()+".FullHash");
+			OutputStream out = new FileOutputStream(DossierFlatTreeCourant.getAbsolutePath()+t.getOperatinSystem()+DossierCourant.getName()+".FullHash");
 
 			/* On parcours le dossier courant de fichier hash */
 			for(File FichierHashcourant : DossierCourant.listFiles())
@@ -76,11 +77,11 @@ public class FlatTree {
 			out.close();
 			
 			/* mis à jour des flux d'entres et de sortie */
-			FileInputStream HashComplet = new FileInputStream(DossierFlatTreeCourant.getAbsolutePath()+"\\"+DossierCourant.getName()+".FullHash");
+			FileInputStream HashComplet = new FileInputStream(DossierFlatTreeCourant.getAbsolutePath()+t.getOperatinSystem()+DossierCourant.getName()+".FullHash");
 			
 			//String NomFichierSplitCourantRaccourcis = FichierSplitCourant.getName().substring(0, FichierSplitcourant.getName().length()-7);
 			
-			FileOutputStream FichierFlatTree = new FileOutputStream(DossierFlatTreeCourant.getAbsolutePath()+"\\"+DossierCourant.getName()+".FlatTree"); 
+			FileOutputStream FichierFlatTree = new FileOutputStream(DossierFlatTreeCourant.getAbsolutePath()+t.getOperatinSystem()+DossierCourant.getName()+".FlatTree"); 
 			
 			/* Bloc réalisant le hash de chaque morceaux (l'entrée à hasher est renseigné et mis à jour par la variable : FichierSplitCourant ) */
 			String NomFichierSplitCourant = HashComplet.toString();
@@ -107,11 +108,12 @@ public class FlatTree {
 	 */
 	public String CreationDossierPlatTree() throws FileNotFoundException
 	{	
+		Tank t = new Tank();
 		/**
 		 *  Creation du dossier part en fonction du dossier d'entrée 
 		 */
 		File pathFolder = new File(CheminDossierCommun);
-		File pathOutput = new File(pathFolder.getParent()+"\\"+pathFolder.getName()+"FlatTree");
+		File pathOutput = new File(pathFolder.getParent()+t.getOperatinSystem()+pathFolder.getName()+"FlatTree");
 
 		if(pathOutput.mkdir())
 		{

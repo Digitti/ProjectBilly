@@ -274,25 +274,28 @@ public class Tank {
 		
 		int NumberOfFiles =0;
 		
-		File DossierCourant = new File(arrayPathDirectory.toString()+decodedHfName);
-		
-		/* On parcours le dossier courant de fichier split */
-		for(File FichierSplitcourant : DossierCourant.listFiles())
+		for (int i = 0; i < arrayPathSplitHash.size(); i++)
 		{
-			NumberOfFiles ++;
-		}
-		
+			if(arrayPathSplitHash.get(i).contains(decodedHfName))
+			{
+				File dir = new File(arrayPathSplitHash.get(i));
+				for(File FichierSplitcourant : dir.listFiles())
+				{
+					NumberOfFiles ++;
+				}
+			}
+		}	
 		return NumberOfFiles;
 	}	
 	
 	/**
 	 * @author Arnold 
 	 * 
-	 * Méthode permettant de récuperer l'empreinte racine d'un fichier
+	 * Méthode permettant de récuperer l'empreinte sur 128 premier bits de la racine d'un fichier
 	 */
-	protected static int GetFirt128BitFileHash(String decodedHfName){
+	protected static int getHashFile(String decodedHfName){
 		
-		int NumberOfFiles =0;
+		
 		
 		//arrayPathFlatTree
 		

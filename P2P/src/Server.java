@@ -26,7 +26,7 @@ public class Server implements MyFrame {
 	 * @throws IOException
 	 * Recherche des fichiers : Méthode réalisant la partie réception des requêtes et analyse
 	 */
-	public void udpServer  ( int port, InetAddress addr)
+	public void udpServer ( int port, InetAddress addr)
 	{
 		try {
 			/* Création de la socket utilisé pour envoyer les données au serveur */
@@ -48,7 +48,7 @@ public class Server implements MyFrame {
 					receiveBuffer[i] = packet.getData()[i];
 				}
 				
-				/* Traitement de la requête */
+				/* Traitement de la requête UDP */
 				frameUdpRequest Request = new frameUdpRequest();
 				Request = MyFrame.CastToframeUdpRequest(receiveBuffer);
 				
@@ -65,13 +65,6 @@ public class Server implements MyFrame {
 					 */
 					if (Test == true){
 						
-						/* Réponse via une trame frameUdpResponse */
-						/*
-						byte[] rBuffer = new String(msg + "bien recu !").getBytes();
-						DatagramPacket response = new DatagramPacket(rBuffer, rBuffer.length, packet.getAddress(), packet.getPort());
-						server.send(response);
-						response.setLength(rBuffer.length);
-						*/
 						
 						/* on instancie et remplit l'objet/trame de réponse */
 						frameUdpResponse Response = new frameUdpResponse();
@@ -85,11 +78,19 @@ public class Server implements MyFrame {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						
 						Response.nameOrHash = encodedHfWithUTF8;
 						Response.nbrFile = Tank.GetNumberOfFiles(decodedHfName);
 						//Response.racineHash = Tank.GetFirt128BitFileHash(decodedHfName);
 						//Response.nameFile =
+						
+						
+						/* Réponse via une trame frameUdpResponse */
+						/*
+						byte[] rBuffer = new String(msg + "bien recu !").getBytes();
+						DatagramPacket response = new DatagramPacket(rBuffer, rBuffer.length, packet.getAddress(), packet.getPort());
+						server.send(response);
+						response.setLength(rBuffer.length);
+						*/
 						
 					}
 					else{
@@ -146,7 +147,7 @@ public class Server implements MyFrame {
 	        byte[] buffer = new byte[8192]; 
 			InputStream in = new FileInputStream(file);
 	        OutputStream out = socket.getOutputStream();
-	        System.out.print("Reception du fichier en cours ");
+	        System.out.print("Envoi du fichier en cours ");
 	        
 	        int count;
 	        while ((count = in.read(buffer)) > 0)
