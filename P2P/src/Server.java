@@ -80,8 +80,8 @@ public class Server implements MyFrame {
 						}
 						Response.nameOrHash = encodedHfWithUTF8;
 						Response.nbrFile = Tank.GetNumberOfFiles(decodedHfName);
-						//Response.racineHash = Tank.GetFirt128BitFileHash(decodedHfName);
-						//Response.nameFile =
+						Response.racineHash = Tank.GetFirt128BitFileHash(decodedHfName);
+						Response.nameFile =
 						
 						
 						/* Réponse via une trame frameUdpResponse */
