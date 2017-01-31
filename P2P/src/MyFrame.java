@@ -32,7 +32,7 @@ public interface MyFrame {
 		//Reponse
 		public int nbrFile;							// nombre de fichier qui constitue le fichier
 		public byte[] racineHash = new byte[16];	// hash du fichier racine
-		public byte nameFile;						// nom du fichier
+		//public byte nameFile;						// nom du fichier
 	}
 	
 	/**
@@ -128,6 +128,9 @@ public interface MyFrame {
 	public static frameUdpRequest CastToframeUdpRequest(byte[] rBuffer){
 		
 		
+		
+		
+		
 		frameUdpRequest ReceiveRequest = new frameUdpRequest();
 		
 		ReceiveRequest.lenght = rBuffer[0];
@@ -175,39 +178,38 @@ public interface MyFrame {
 		
 		return ReceiveRequest;	
 	}	
-	/*
-	  public static long convertToInteger(byte[] Adress){ 
 
-		  long ipDec = 0;
-		  
-		  byte[] ip  = ia.getAddress();
-		  int w = 0, x = 0, y = 0, z = 0;
-		  
-		  //conversion to int
-		  w = ip[3] & 0xFF;
-		  x = ip[2] & 0xFF;
-		  y = ip[1] & 0xFF;
-		  z = ip[0] & 0xFF;
-		  
-		  //convert to decimal
-		  ipDec = (long)z + (long)(y*(Math.pow(2, 8))) + 
-		    (long)(x*(Math.pow(2, 16))) +
-		    (long)(w*(Math.pow(2, 24)));
-		  
-		  return ipDec;
-		 }
-	*/
-	/*
-    - le type de requête sur un octet : 0 pour une requête sur l'empreinte de la racine de l'arbre de Merkle, 1 pour une requête sur le nom de fichier 
-
-    - pour une requête sur empreinte, on indique les 16 premiers octets de l'empreintes (128 bits) 
-
-    - pour une requête sur nom, on indique l'expression régulière recherchée sous la forme d'une chaîne encodée en UTF-8 et préfixée par la taille en octets de la chaîne sur 1 octet 
-
-    - on peut imaginer d'autres types de requêtes préfixées par un octet autre que 0 et 1 
-
-*/
-	
+	public static byte[] CastToByteResponse(frameUdpResponse TransmitRequest){
+		
+		byte[] tBuffer = new byte[37];
+		
+		if (TransmitRequest.RequestType == REQUESTTYPE.NameRequest){
+			tBuffer[0] = 1;
+			
+			for (int i=0;i<16;i++){
+				tBuffer[1+i] = TransmitRequest.nameOrHash[i];
+			}
+			
+			/* découpe de l'entier sur 2 bytes 
+			* !!!!!!! ne pas dépasser 65535 comme numéro de port 
+			* sinon augmenter le nombre de byte pour stocker */
+			tBuffer[17] = (byte) TransmitRequest.nbrFile;
+			tBuffer[18] = (byte) (TransmitRequest.nbrFile >> 8);	
+			tBuffer[19] = (byte) (TransmitRequest.nbrFile >> 16);
+			tBuffer[20] = (byte) (TransmitRequest.nbrFile >> 24);
+			
+			for (int i=0;i<16;i++){
+				tBuffer[21+i] = TransmitRequest.racineHash[i];
+			}
+			
+		}
+		else{
+			
+			tBuffer[0] = 0;
+		}
+		
+		return tBuffer;
+	}
 }
 
 

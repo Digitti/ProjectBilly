@@ -26,6 +26,12 @@ public class MyMainServer implements MyFrame {
 		String ip =  sc.nextLine();
 		System.out.print("Veuillez entree le port d'ecoute souhaiter : ");
 		String port = sc.nextLine();
+		
+		System.out.print("Veuillez entree l'adresse ip du client : ");
+		String ipclient =  sc.nextLine();
+		System.out.print("Veuillez entree le port d'ecoute du client : ");
+		String portclient = sc.nextLine();
+		
 		sc.close();
 		
 		String sendFile = "C:\\Users\\KeviN\\Desktop\\test.img";

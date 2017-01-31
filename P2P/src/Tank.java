@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -274,11 +275,15 @@ public class Tank {
 		
 		int NumberOfFiles =0;
 		
+		
 		for (int i = 0; i < arrayPathSplitHash.size(); i++)
 		{
+			
 			if(arrayPathSplitHash.get(i).contains(decodedHfName))
 			{
 				File dir = new File(arrayPathSplitHash.get(i));
+				
+				
 				for(File FichierSplitcourant : dir.listFiles())
 				{
 					NumberOfFiles ++;
@@ -292,22 +297,41 @@ public class Tank {
 	 * @author Arnold 
 	 * 
 	 * Méthode permettant de récuperer l'empreinte sur 128 premier bits de la racine d'un fichier
+	 *  
 	 */
-	protected static int getHashFile(String decodedHfName){
+	protected static byte[] getHashFile(String decodedHfName) throws IOException{
 		
-		
-		
-		//arrayPathFlatTree
-		
-		//File DossierCourant = new File(arrayPathDirectory.toString()+decodedHfName);
-		
-		/* On parcours le dossier courant de fichier split */
-		//for(File FichierSplitcourant : DossierCourant.listFiles())
+		/* on parcours le dossier de l'arbre plat */
+		for (int i = 0; i < arrayPathFlatTree.size(); i++)
 		{
-			NumberOfFiles ++;
+			/* on sélectionne le sous-dossier correspondant a la requete */
+			if(arrayPathSplitHash.get(i).contains(decodedHfName))
+			{
+				/* une fois le sous-dossier selectionne, on determine l empreinte racine */
+				File dir = new File(arrayPathSplitHash.get(i));
+				for(File FichierPlatTree : dir.listFiles())
+				{
+					/* on selectionne la racine */
+					if (FichierPlatTree.getName().contains("FlatTree")){
+						
+						/* on raccourcis l'empreinte à ses 16 premiers octets */
+						FileInputStream FichierFlatTreeCourant = new FileInputStream(FichierPlatTree);
+						//String NomFichierMerkleCourantRaccourcis = FichierHashcourant.getName().substring(0, FichierHashcourant.getName().length()-6);
+						FileOutputStream FlatTreeCourant = new FileOutputStream(FichierPlatTree.getAbsolutePath());				
+						
+						byte[] EmpreinteCourante128bits = new byte[16];
+						FichierFlatTreeCourant.read(EmpreinteCourante128bits, 0, 16);
+						
+						FlatTreeCourant.close();
+						FichierFlatTreeCourant.close();
+									
+						
+						return EmpreinteCourante128bits;
+					}
+				}
+			}
 		}
-		
-		return NumberOfFiles;
+		return null;
 	}
 	
 	/**

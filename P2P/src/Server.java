@@ -26,7 +26,7 @@ public class Server implements MyFrame {
 	 * @throws IOException
 	 * Recherche des fichiers : Méthode réalisant la partie réception des requêtes et analyse
 	 */
-	public void udpServer ( int port, InetAddress addr)
+	public void udpServer ( int port, InetAddress addr,int portclient,InetAddress ipclient )
 	{
 		try {
 			/* Création de la socket utilisé pour envoyer les données au serveur */
@@ -80,17 +80,24 @@ public class Server implements MyFrame {
 						}
 						Response.nameOrHash = encodedHfWithUTF8;
 						Response.nbrFile = Tank.GetNumberOfFiles(decodedHfName);
-						Response.racineHash = Tank.GetFirt128BitFileHash(decodedHfName);
-						Response.nameFile =
+						Response.racineHash = Tank.getHashFile(decodedHfName);
+						//Response.nameFile = encodedHfWithUTF8;
 						
+						// initialisation d'une connexion cote client UDP
+						DatagramSocket host = new DatagramSocket();
 						
-						/* Réponse via une trame frameUdpResponse */
-						/*
-						byte[] rBuffer = new String(msg + "bien recu !").getBytes();
-						DatagramPacket response = new DatagramPacket(rBuffer, rBuffer.length, packet.getAddress(), packet.getPort());
-						server.send(response);
-						response.setLength(rBuffer.length);
-						*/
+						/* la requête est casté au format d'un tableau de byte pour être envoyé parl a socket UDP */
+						byte[] tBuffer = new byte[(MyFrame.CastToByteResponse(Response).length)];
+						tBuffer = MyFrame.CastToByteResponse(Response);
+						DatagramPacket packet1 = new DatagramPacket(tBuffer, tBuffer.length, ipclient, portclient);
+						
+						/* affectation des donnees au packet */
+						packet1.setData(tBuffer);
+						
+						/* envoi des données */
+						host.send(packet1);
+						System.out.println("Un message vient d'etre envoyer !");
+						
 						
 					}
 					else{
@@ -114,7 +121,6 @@ public class Server implements MyFrame {
 					// verification negative on prepare la reponse seulement en incrementant le chemin
 					System.out.println("affichage de la variable : ");
 					System.out.println(Request);
-					
 					
 				}
 				

@@ -18,16 +18,17 @@ public class MyMainHost implements MyFrame {
 		Host h = new Host();
 		Scanner sc = new Scanner(System.in);
 		
-		/* lancement du serveur pour test */
-		Server s = new Server();
-		Scanner sc1 =  new Scanner(System.in);
-		
 		System.out.print("Veuillez entree le hash ou le nom du fichier : ");
 		String hf = sc.nextLine();
-		System.out.print("Veuillez entree l'adresse ip du votre serveur demander : ");
-		String ip = sc.nextLine();
-		System.out.print("Veuillez entree le port d'ecoute souhaiter :  ");
-		int port = sc.nextInt();
+		System.out.print("Veuillez entree l'adresse ip du serveur: ");
+		String ipServer = sc.nextLine();
+		System.out.print("Veuillez entree le port d'ecoute du serveur :  ");
+		int portServer = sc.nextInt();
+		
+		System.out.print("Veuillez entreer votre adresse ip : ");
+		String ipClient = sc.nextLine();
+		System.out.print("Veuillez entrer votre port :  ");
+		int portClient = sc.nextInt();
 		sc.close();
 		
 		
@@ -68,8 +69,8 @@ public class MyMainHost implements MyFrame {
 		Request.nameOrHash = encodedHfWithUTF8;	/* pour le moment on désire télécharger le fichier bd */
 		Request.lenght = 1;
 		Request.IpType = IPTYPE.IPV4;
-		Request.addr = ip.getBytes(); // 127.0.0.1
-		Request.port = port;
+		Request.addr = ipServer.getBytes(); // 127.0.0.1
+		Request.port = portServer;
 		
 		/* On transmet la requête */
 		h.udpHost(Request);
