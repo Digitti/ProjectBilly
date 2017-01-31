@@ -65,7 +65,6 @@ public class Server implements MyFrame {
 					 */
 					if (Test == true){
 						
-												
 						/* Réponse via une trame frameUdpResponse */
 						/*
 						byte[] rBuffer = new String(msg + "bien recu !").getBytes();
@@ -88,6 +87,9 @@ public class Server implements MyFrame {
 						}
 						
 						Response.nameOrHash = encodedHfWithUTF8;
+						Response.nbrFile = Tank.GetNumberOfFiles(decodedHfName);
+						//Response.racineHash = Tank.GetFirt128BitFileHash(decodedHfName);
+						//Response.nameFile =
 						
 					}
 					else{

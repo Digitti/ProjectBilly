@@ -264,6 +264,48 @@ public class Tank {
 		}
 		return false;
 	}
+		
+	/**
+	 * @author Arnold 
+	 * 
+	 * Méthode permettant de récuperer le nombre de ressource initiales
+	 */
+	protected static int GetNumberOfFiles(String decodedHfName){
+		
+		int NumberOfFiles =0;
+		
+		File DossierCourant = new File(arrayPathDirectory.toString()+decodedHfName);
+		
+		/* On parcours le dossier courant de fichier split */
+		for(File FichierSplitcourant : DossierCourant.listFiles())
+		{
+			NumberOfFiles ++;
+		}
+		
+		return NumberOfFiles;
+	}	
+	
+	/**
+	 * @author Arnold 
+	 * 
+	 * Méthode permettant de récuperer l'empreinte racine d'un fichier
+	 */
+	protected static int GetFirt128BitFileHash(String decodedHfName){
+		
+		int NumberOfFiles =0;
+		
+		//arrayPathFlatTree
+		
+		//File DossierCourant = new File(arrayPathDirectory.toString()+decodedHfName);
+		
+		/* On parcours le dossier courant de fichier split */
+		//for(File FichierSplitcourant : DossierCourant.listFiles())
+		{
+			NumberOfFiles ++;
+		}
+		
+		return NumberOfFiles;
+	}
 	
 	/**
 	 * @author KeviN
